@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANTI-FLOP // CYBERPUNK MUSIC INTELLIGENCE</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Orbitron:wght@500;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        space: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    },
+                    colors: {
+                        cyber: {
+                            950: '#04050a',
+                            900: '#090c17',
+                            850: '#0e1222',
+                            800: '#141a2f',
+                            750: '#1c233e',
+                            700: '#252e4f',
+                            cyan: '#00f0ff',
+                            pink: '#ff007f',
+                            purple: '#9d4edd',
+                            neonGreen: '#00ff88',
+                            amber: '#ffb703',
+                            orange: '#ff5400'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #04050a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #00f0ff 0%, #9d4edd 50%, #ff007f 100%);
+            border-radius: 9999px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            box-shadow: 0 0 10px #00f0ff;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin-reverse {
+            to {
+                transform: rotate(-360deg);
+            }
+        }
+
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        .spinner-rev {
+            animation: spin-reverse 1.4s linear infinite;
+        }
+
+        @keyframes cyber-pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.6));
+            }
+
+            50% {
+                opacity: 0.65;
+                filter: drop-shadow(0 0 2px rgba(0, 240, 255, 0.2));
+            }
+        }
+
+        .pulse-neon {
+            animation: cyber-pulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .cyber-bg {
+            background-color: #04050a;
+            background-image:
+                radial-gradient(circle at 12% 15%, rgba(0, 240, 255, 0.09) 0%, transparent 40%),
+                radial-gradient(circle at 88% 22%, rgba(255, 0, 127, 0.08) 0%, transparent 38%),
+                radial-gradient(circle at 50% 85%, rgba(157, 78, 221, 0.08) 0%, transparent 45%),
+                linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+        }
+
+        .cyber-glass {
+            background: rgba(9, 12, 23, 0.82);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(37, 46, 79, 0.75);
+        }
+
+        .cyber-card {
+            background: rgba(14, 18, 34, 0.75);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(37, 46, 79, 0.8);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .cyber-card:hover {
+            border-color: rgba(0, 240, 255, 0.5);
+            box-shadow: 0 0 25px -5px rgba(0, 240, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .cyber-card-active {
+            background: rgba(255, 0, 127, 0.1);
+            border: 1px solid rgba(255, 0, 127, 0.7);
+            box-shadow: 0 0 25px -4px rgba(255, 0, 127, 0.35);
+        }
+
+        .cyber-btn-gradient {
+            background: linear-gradient(135deg, #00f0ff 0%, #9d4edd 50%, #ff007f 100%);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .cyber-btn-gradient:hover:not(:disabled) {
+            box-shadow: 0 0 35px rgba(255, 0, 127, 0.55), 0 0 15px rgba(0, 240, 255, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .cyber-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .text-gradient-cyber {
+            background: linear-gradient(135deg, #00f0ff 0%, #b5179e 50%, #ff007f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-gradient-lime {
+            background: linear-gradient(135deg, #00ff88 0%, #00f0ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body class="cyber-bg text-zinc-100 min-h-screen font-sans selection:bg-cyber-pink selection:text-white antialiased">
+
+    <div id="app"></div>
+
+    <script>
+        // --- 20 GÉNEROS MUSICALES ---
+        const GENEROS_PRINCIPALES = [
+            'Indie Rock',
+            'Indie Pop',
+            'Bedroom Pop / Lo-Fi',
+            'Shoegaze / Dream Pop',
+            'Post-Punk / Darkwave',
+            'Folk / Cantautor',
+            'Urbano / Reggaetón Mexa',
+            'Hip-Hop / Rap Alternativo',
+            'R&B / Neo-Soul',
+            'Corridos Tumbados / Sierreño Alt',
+            'Synth-Pop / Electrónica',
+            'Math Rock / Midwest Emo',
+            'Psicodelia / Neo-Psicodelia',
+            'Punk / Garage Rock',
+            'Cumbia Alternativa / Psicodélica',
+            'Hyperpop / Experimental',
+            'Bolero Glam / Retro Pop',
+            'Metal / Hardcore',
+            'House / Techno / Club',
+            'Jazz Fusión / Instrumental'
+        ];
+
+        // --- CATÁLOGO DE 45 REFERENTES ---
+        const MOCK_REFERENTES = [
+            { id: 1, nombre: 'Bratty', genero: 'Surf Pop / Bedroom Pop', img: 'https://i.scdn.co/image/ab6761610000f1780f873350e7a746775fa8e712' },
+            { id: 2, nombre: 'Ed Maverick', genero: 'Folk / Alternativo', img: 'https://i.scdn.co/image/ab6761610000f1789b4da882d4b177df33bc0fa8' },
+            { id: 3, nombre: 'NSQK', genero: 'Alternativo / Urbano', img: 'https://i.scdn.co/image/ab6761610000f1784d41b6e2e1a14614267fb77c' },
+            { id: 4, nombre: 'Depresión Sonora', genero: 'Post-Punk', img: 'https://i.scdn.co/image/ab6761610000f1783443006835a7e4c15dd18a20' },
+            { id: 5, nombre: 'Latin Mafia', genero: 'R&B / Pop', img: 'https://i.scdn.co/image/ab6761610000f178bb08dec9f048a83643a0ea72' },
+            { id: 6, nombre: 'Kevin Kaarl', genero: 'Folk / Indie', img: 'https://i.scdn.co/image/ab6761610000f17885090748e02f553d5b14592c' },
+            { id: 7, nombre: 'Enjambre', genero: 'Indie Rock', img: 'https://i.scdn.co/image/ab6761610000f1788cd6eadf6d7e051e79f1a816' },
+            { id: 8, nombre: 'Siddhartha', genero: 'Indie Rock / Pop', img: 'https://i.scdn.co/image/ab6761610000f1783e02142de6da5cf8c30637be' },
+            { id: 9, nombre: 'Little Jesus', genero: 'Indie Pop / Tropipop', img: 'https://i.scdn.co/image/ab6761610000f17831cde267f24d56b6e3c39ced' },
+            { id: 10, nombre: 'Camilo Séptimo', genero: 'Synth-Pop / Indie', img: 'https://i.scdn.co/image/ab6761610000f1780fe57fde2a5732d6a1cc61d5' },
+            { id: 11, nombre: 'Porter', genero: 'Psicodelia / Indie Rock', img: 'https://i.scdn.co/image/ab6761610000f178e1186bce3243fd47f10a9238' },
+            { id: 12, nombre: 'León Larregui', genero: 'Synth-Pop / Rock', img: 'https://i.scdn.co/image/ab6761610000f178c1f18342ca9a79809dc1a301' },
+            { id: 13, nombre: 'Silvana Estrada', genero: 'Folk / Cantautor', img: 'https://i.scdn.co/image/ab6761610000f1780d637c7fefeeb84fd89dbfa2' },
+            { id: 14, nombre: 'Natalia Lafourcade', genero: 'Folk / Alternativo', img: 'https://i.scdn.co/image/ab6761610000f178efb8cc9d57eabb9f1e3f8d0b' },
+            { id: 15, nombre: 'Carla Morrison', genero: 'Indie Pop', img: 'https://i.scdn.co/image/ab6761610000f178cf74fc5ec73dd575bd54ca09' },
+            { id: 16, nombre: 'El David Aguilar', genero: 'Cantautor / Folk', img: 'https://i.scdn.co/image/ab6761610000f178054775313ecee77bd782387b' },
+            { id: 17, nombre: 'Humbe', genero: 'Pop Alternativo / R&B', img: 'https://i.scdn.co/image/ab6761610000f1783cfb64685c503c45c35085ee' },
+            { id: 18, nombre: 'Arroba Nat', genero: 'Bedroom Pop / Folk', img: 'https://i.scdn.co/image/ab6761610000f178d377af48edeedc0edf1443ea' },
+            { id: 19, nombre: 'Señor Kino', genero: 'Surf Punk / Garage', img: 'https://i.scdn.co/image/ab6761610000f17825d9e918e68151432045d623' },
+            { id: 20, nombre: 'Margaritas Podridas', genero: 'Shoegaze / Grunge', img: 'https://i.scdn.co/image/ab6761610000f1783ddc6d0248acbc9d77c77a18' },
+            { id: 21, nombre: 'Los Blenders', genero: 'Surf Rock / Garage', img: 'https://i.scdn.co/image/ab6761610000f1786d65f309d88cd34a4dc12261' },
+            { id: 22, nombre: 'O Tortuga', genero: 'Garage / Punk', img: 'https://i.scdn.co/image/ab6761610000f178f75f2498a7db8779fe2f9a26' },
+            { id: 23, nombre: 'Dromedarios Mágicos', genero: 'Folk / Bedroom Pop', img: 'https://i.scdn.co/image/ab6761610000f1783dc9414f7132a622ff840de7' },
+            { id: 24, nombre: 'Daniel, Me Estás Matando', genero: 'Bolero Glam', img: 'https://i.scdn.co/image/ab6761610000f1782c55dc0c5e84b17b01869558' },
+            { id: 25, nombre: 'Ramona', genero: 'Psicodelia / Rock', img: 'https://i.scdn.co/image/ab6761610000f178f45cd3c4f80715aee1d5237b' },
+            { id: 26, nombre: 'CLUBZ', genero: 'Electro Pop / Synth-Pop', img: 'https://i.scdn.co/image/ab6761610000f178d0bbcb466844256d0969d498' },
+            { id: 27, nombre: 'Girl Ultra', genero: 'R&B / Neo-Soul', img: 'https://i.scdn.co/image/ab6761610000f1786a6f0f66aa0a4292c900ba8c' },
+            { id: 28, nombre: 'Jesse Baez', genero: 'R&B / Urbano', img: 'https://i.scdn.co/image/ab6761610000f17833061b0a1e77242ecd8977b5' },
+            { id: 29, nombre: 'Álvaro Díaz', genero: 'Urbano / Alternativo', img: 'https://i.scdn.co/image/ab6761610000f1780758d1a9c83b3bfb788b83ab' },
+            { id: 30, nombre: 'Alemán', genero: 'Hip-Hop / Rap', img: 'https://i.scdn.co/image/ab6761610000f178877ddc253d51f0b445f35165' },
+            { id: 31, nombre: 'Gera MX', genero: 'Hip-Hop / Rap', img: 'https://i.scdn.co/image/ab6761610000f178ec19db27b17a79d34a60b5ba' },
+            { id: 32, nombre: 'Natanael Cano', genero: 'Corridos Tumbados', img: 'https://i.scdn.co/image/ab6761610000f1780d4838ef7ef6c0f889266f60' },
+            { id: 33, nombre: 'Junior H', genero: 'Corridos Tumbados / Sad Sierreño', img: 'https://i.scdn.co/image/ab6761610000f1785fbe9b7dc7d9a2295bd6022c' },
+            { id: 34, nombre: 'Iván Cornejo', genero: 'Sierreño Alternativo', img: 'https://i.scdn.co/image/ab6761610000f1780a052faab8058ca12cd9ff9b' },
+            { id: 35, nombre: 'Cuco', genero: 'Dream Pop / Psicodelia', img: 'https://i.scdn.co/image/ab6761610000f17835869fcd31b5d3252d636595' },
+            { id: 36, nombre: 'The Marías', genero: 'Indie Pop / Psicodelia', img: 'https://i.scdn.co/image/ab6761610000f178af586afa2b397f1288683a76' },
+            { id: 37, nombre: 'Sonido Gallo Negro', genero: 'Cumbia Psicodélica', img: 'https://i.scdn.co/image/ab6761610000f17891e4fe0e6fd34d9b3d977c7c' },
+            { id: 38, nombre: 'Austin TV', genero: 'Post-Rock / Instrumental', img: 'https://i.scdn.co/image/ab6761610000f1781ec6e34d4807d1a08c98b7a4' },
+            { id: 39, nombre: 'Belafonte Sensacional', genero: 'Folk Punk', img: 'https://i.scdn.co/image/ab6761610000f178e49508f3cab1fed667dad915' },
+            { id: 40, nombre: 'Zoe Gotusso', genero: 'Indie Pop / Folk', img: 'https://i.scdn.co/image/ab6761610000f178b177b7b2fdb9ea6cf85f9664' },
+            { id: 41, nombre: 'El Mató a un Policía Motorizado', genero: 'Indie Rock', img: 'https://i.scdn.co/image/ab6761610000f1786e6eaf3fc12c6ccd4bf57a7e' },
+            { id: 42, nombre: 'Ca7riel & Paco Amoroso', genero: 'Experimental / Urbano', img: 'https://i.scdn.co/image/ab6761610000f1786f9721814f5e1a20878e3c2f' },
+            { id: 43, nombre: 'Rels B', genero: 'R&B / Urbano', img: 'https://i.scdn.co/image/ab6761610000f178f56b9f1fd7bc8b1573a3c29f' },
+            { id: 44, nombre: 'Mac DeMarco', genero: 'Lo-Fi / Indie Rock', img: 'https://i.scdn.co/image/ab6761610000f178c9aca5b6d4c528caf75e8a1d' },
+            { id: 45, nombre: 'Tame Impala', genero: 'Neo-Psicodelia', img: 'https://i.scdn.co/image/ab6761610000f178e412a782245eb20d9626c601' }
+        ];
+
+        const MOCK_MEDIOS_MEXICO = [
+            { nombre: 'Indie Rocks!', tipo: 'Revista Digital', enfoque: 'Lanzamientos, entrevistas y cobertura de festivales. Ideal para proyectos en etapa media/avanzada con EP o álbum listo.', contacto: 'editorial@indierocks.mx', url: 'https://www.indierocks.mx' },
+            { nombre: 'Me Hace Ruido', tipo: 'Blog Independiente', enfoque: 'Escena emergente local, reseñas de EPs, conciertos pequeños y artistas sin disquera.', contacto: 'DM en Instagram @mehaceruido o email', url: 'https://mehaceruido.com' },
+            { nombre: 'Marvin Magazine', tipo: 'Revista Digital / Impresa', enfoque: 'Cultura alternativa, música, cine y arte. Publican entrevistas a fondo y listas de lo mejor del año.', contacto: 'contacto@marvin.com.mx', url: 'https://marvin.com.mx' },
+            { nombre: 'Noisey en Español (Vice)', tipo: 'Medio Masivo Alternativo', enfoque: 'Formatos largos, historias de artistas con estética o discurso disruptivo. Cubren escena Latam completa.', contacto: 'Pitch vía DMs o contacto editorial', url: 'https://www.vice.com/es/topic/noisey' },
+            { nombre: 'Rolling Stone en Español', tipo: 'Medio Masivo Internacional', enfoque: 'Reseñas de álbumes, listas editoriales y perfiles de artistas con tracción comprobada.', contacto: 'Pitch vía PR o agencia de prensa', url: 'https://www.rollingstone.com.mx' },
+            { nombre: 'Reactor 105.7 FM', tipo: 'Radio Pública (CDMX)', enfoque: 'Rock, alternativo e indie. Programas abiertos a propuestas emergentes los fines de semana.', contacto: 'Enviar sencillo .WAV a locutores por redes sociales', url: 'https://reactor.imer.mx' },
+            { nombre: 'Ibero 90.9 FM', tipo: 'Radio Universitaria (CDMX)', enfoque: 'Programación eclética: indie, electrónica, jazz, folk y experimental. Excelente para lanzamientos de nicho.', contacto: 'Enviar material a programas específicos', url: 'https://ibero909.fm' },
+            { nombre: 'SubmitHub', tipo: 'Plataforma de Pitching', enfoque: 'Envío directo a +2,500 curadores de playlists independientes, blogs y canales de YouTube.', contacto: 'Crear cuenta y usar créditos estándar o premium', url: 'https://www.submithub.com' },
+            { nombre: 'Groover', tipo: 'Plataforma de Pitching', enfoque: 'Curadores europeos y latinoamericanos. Garantizan respuesta en 7 días con retroalimentación profesional.', contacto: 'Regístrate y elige curadores por género', url: 'https://groover.co' },
+            { nombre: 'DailyPlaylists', tipo: 'Plataforma de Pitching', enfoque: 'Red de playlists independientes con 1K-50K seguidores. Alto Save Rate para activar Discover Weekly.', contacto: 'Envío gratuito disponible', url: 'https://dailyplaylists.com' },
+            { nombre: 'PlaylistPush', tipo: 'Servicio de Promoción', enfoque: 'Campañas pagadas de colocación en playlists orgánicas verificadas (no bots).', contacto: 'Crear campaña desde $150 USD', url: 'https://playlistpush.com' },
+            { nombre: 'Sofar Sounds México', tipo: 'Shows en vivo íntimos', enfoque: 'Conciertos secretos en CDMX, GDL y MTY. Ideal para generar contenido audiovisual profesional gratuito.', contacto: 'Aplicar como artista en la plataforma', url: 'https://www.sofarsounds.com/cities/mexico-city' }
+        ];
+
+        // ====================================================================
+        // MOTOR DE BÚSQUEDA EN VIVO - SPOTIFY WEB API (Client Credentials)
+        // ====================================================================
+        const SPOTIFY_CREDS = {
+            clientId: '2786fb6048d64f938162d8b09f8dfe3a',
+            clientSecret: '1e2c7c70f81c44a788cf1d71139a2144'
+        };
+        let _spotifyToken = null;
+        let _spotifyTokenExp = 0;
+        let _searchDebounce = null;
+
+        // Registro global de artistas descubiertos en vivo (para que las pills funcionen)
+        const liveArtistsRegistry = {};
+
+        async function getSpotifyToken() {
+            if (_spotifyToken && Date.now() < _spotifyTokenExp - 60000) return _spotifyToken;
+            try {
+                const basic = btoa(SPOTIFY_CREDS.clientId + ':' + SPOTIFY_CREDS.clientSecret);
+                const res = await fetch('https://accounts.spotify.com/api/token', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Basic ' + basic,
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: 'grant_type=client_credentials'
+                });
+                if (!res.ok) {
+                    console.warn('Spotify auth error status:', res.status);
+                    state.spotifyConnected = false;
+                    return null;
+                }
+                const data = await res.json();
+                if (!data.access_token) {
+                    state.spotifyConnected = false;
+                    return null;
+                }
+                _spotifyToken = data.access_token;
+                _spotifyTokenExp = Date.now() + (data.expires_in * 1000);
+                state.spotifyConnected = true;
+                return _spotifyToken;
+            } catch (e) {
+                console.warn('Spotify auth error:', e);
+                state.spotifyConnected = false;
+                return null;
+            }
+        }
+
+        function formatFollowers(n) {
+            if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+            if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+            return n.toString();
+        }
+
+        async function searchSpotifyLive(query) {
+            const token = await getSpotifyToken();
+            if (!token) return [];
+            try {
+                const res = await fetch(
+                    'https://api.spotify.com/v1/search?q=' + encodeURIComponent(query) + '&type=artist&limit=10',
+                    { headers: { 'Authorization': 'Bearer ' + token } }
+                );
+                if (!res.ok) {
+                    console.warn('Spotify search error status:', res.status);
+                    return [];
+                }
+                const data = await res.json();
+                const items = data.artists?.items || [];
+                return items.map(a => {
+                    const art = {
+                        id: 'sp_' + a.id,
+                        spotifyId: a.id,
+                        nombre: a.name,
+                        genero: a.genres?.slice(0, 2).join(' / ') || 'Sin género clasificado',
+                        img: a.images?.[a.images.length > 1 ? a.images.length - 1 : 0]?.url || a.images?.[0]?.url || null,
+                        imgLarge: a.images?.[0]?.url || null,
+                        popularidad: a.popularity != null ? a.popularity : 0,
+                        seguidores: a.followers?.total || 0,
+                        spotifyUrl: a.external_urls?.spotify,
+                        isLive: true
+                    };
+                    liveArtistsRegistry[art.id] = art;
+                    return art;
+                });
+            } catch (e) {
+                console.warn('Spotify search error:', e);
+                return [];
+            }
+        }
+
+        // Buscar artista para registrarlo
+        function findArtistAnywhere(id) {
+            const mock = MOCK_REFERENTES.find(a => a.id === id);
+            if (mock) return mock;
+            return liveArtistsRegistry[id] || null;
+        }
+
+        // --- MOCK DATA: PLAN DE CONTENIDO ---
+        const MOCK_PLAN_CONTENIDO = [
+            {
+                id: 'c1',
+                dia: 'Lunes',
+                formato: 'TikTok / Reel (15-25s)',
+                pilar: 'Descubrimiento (Gancho de Nicho)',
+                titulo: 'Comparativa directa con tus referentes',
+                gancho: '"Si te gusta el sonido de [Referente] pero más crudo, escucha este puente..."',
+                ejecucion: 'Graba una toma fija en tu cuarto o estudio con luz cálida. Pon la letra en subtítulos grandes y entra directo al coro en el segundo 3.',
+                objetivo: 'Atraer audiencia fría que ya escucha a tus artistas de referencia.'
+            },
+            {
+                id: 'c2',
+                dia: 'Miércoles',
+                formato: 'Reel / YouTube Short (30-45s)',
+                pilar: 'Proceso Creativo (Behind the Scenes)',
+                titulo: 'Cómo nació el sonido principal de tu canción',
+                gancho: '"Así convertí una nota de voz de las 3 AM en mi próximo sencillo..."',
+                ejecucion: 'Muestra 5 segundos de la nota de voz original en tu celular, haz un corte rápido a tu DAW (Ableton/FL/Logic) y suelta la mezcla final.',
+                objetivo: 'Generar conexión humana y retención alta (la gente ama ver el antes y después).'
+            },
+            {
+                id: 'c3',
+                dia: 'Viernes',
+                formato: 'Carrusel de Instagram (5 slides)',
+                pilar: 'Identidad Visual / Storytelling',
+                titulo: 'El universo estético detrás de la letra',
+                gancho: 'Slide 1: Foto con grano/estética analógica + una frase vulnerable de tu canción.',
+                ejecucion: 'Combina fotos del proceso, capturas de tus notas escritas a mano y un fragmento de audio de fondo usando la música oficial de IG.',
+                objetivo: 'Aumentar guardados y compartidos en historias (señal clave para el algoritmo).'
+            },
+            {
+                id: 'c4',
+                dia: 'Domingo',
+                formato: 'TikTok / Reel (20s)',
+                pilar: 'Performance Crudo',
+                titulo: 'Sesión acústica en un lugar cotidiano',
+                gancho: 'Sin texto largo. Empieza cantando o tocando desde el segundo 0.5.',
+                ejecucion: 'Graba en una azotea, parque o coche con el micrófono del celular. La imperfección genera más confianza que un videoclip sobreproducido.',
+                objetivo: 'Demostrar talento real en vivo y validar el proyecto ante nuevos seguidores.'
+            }
+        ];
+
+        // --- MOCK DATA: ROADMAP DE LANZAMIENTO ---
+        const MOCK_ROADMAP = [
+            {
+                fase: 'Fase 1: Pre-Lanzamiento',
+                tiempo: '4 a 2 semanas antes',
+                color: 'text-purple-400',
+                tareas: [
+                    { id: 't1', texto: 'Subir el master y portada a tu distribuidora (DistroKid, TuneCore, CD Baby) mínimo 21 días antes.' },
+                    { id: 't2', texto: 'Hacer el Pitch Editorial en Spotify for Artists (detallando instrumentos, mood y ciudad).' },
+                    { id: 't3', texto: 'Armar tu EPK (Press Kit de 1 página en PDF/Notion) con bio corta, 3 fotos en alta y link privado de escucha.' },
+                    { id: 't4', texto: 'Grabar 8 a 10 videos cortos en un solo día usando el fragmento más pegajoso (coro o puente).' }
+                ]
+            },
+            {
+                fase: 'Fase 2: Semana de Estreno',
+                tiempo: 'Día -7 al Día 0',
+                color: 'text-emerald-400',
+                tareas: [
+                    { id: 't5', texto: 'Activar campaña de Pre-Save y poner el link en tu biografía de Instagram y TikTok.' },
+                    { id: 't6', texto: 'Subir el Spotify Canvas (video vertical en loop de 8 segundos) antes del viernes.' },
+                    { id: 't7', texto: 'Enviar el sencillo por correo a blogs mexicanos (Me Hace Ruido, Filter) y curadores independientes.' },
+                    { id: 't8', texto: 'Día 0 (Viernes): Publicar el video principal, hacer un Live corto o dinámica en historias agradeciendo.' }
+                ]
+            },
+            {
+                fase: 'Fase 3: Post-Lanzamiento',
+                tiempo: 'Semanas 1 a 3 después',
+                color: 'text-blue-400',
+                tareas: [
+                    { id: 't9', texto: 'Publicar una versión acústica o "Live Session" casera en YouTube para darle segunda vida al tema.' },
+                    { id: 't10', texto: 'Revisar en Spotify for Artists de qué ciudades y playlists llegaron tus oyentes.' },
+                    { id: 't11', texto: 'Responder con video a los comentarios más interesantes en TikTok para reactivar el audio.' }
+                ]
+            }
+        ];
+
+        // --- MOTOR DE DIAGNÓSTICO AVANZADO ---
+        function generarDiagnosticoAvanzado(projectData, selectedRefNames) {
+            const genero = projectData.generoPrincipal;
+            const esUrbanoORegional = /Urbano|Hip-Hop|Corridos|R&B|Reggaetón/i.test(genero);
+            const esElectronica = /Synth-Pop|House|Hyperpop|Electrónica/i.test(genero);
+
+            let score = 40;
+            if (projectData.spotify) score += 20;
+            if (projectData.igScreenshot) score += 15;
+            if (selectedRefNames.length >= 3) score += 15;
+            if (projectData.subgeneros.trim().length > 2) score += 10;
+
+            const publicoMeta = {
+                edad: esUrbanoORegional ? '16 - 24 años (Gen Z)' : esElectronica ? '20 - 30 años (Gen Z / Millennial)' : '18 - 27 años (Universitarios y jóvenes adultos)',
+                ciudades: esUrbanoORegional
+                    ? 'CDMX, Monterrey, Guadalajara, Tijuana y Culiacán'
+                    : 'CDMX, Guadalajara, Monterrey, Puebla y Querétaro (expansión a Bogotá y Santiago)',
+                horariosPico: esElectronica ? 'Jueves a Sábado (9:00 PM - 2:00 AM)' : 'Lunes a Viernes (7:00 PM - 11:30 PM) y traslados',
+                comportamiento: esUrbanoORegional
+                    ? 'Descubrimiento acelerado en TikTok y playlists de estado de ánimo. Alta interacción en comentarios y compartidos por WhatsApp/IG Stories.'
+                    : 'Escucha activa por álbum/EP, guarda canciones en playlists personales de nicho y valora la estética visual y el proceso creativo detrás del artista.',
+                interesesCruzados: [
+                    `Oyentes activos de ${selectedRefNames[0] || 'la escena alternativa'}`,
+                    projectData.subgeneros ? `Etiquetas: ${projectData.subgeneros}` : `Escena ${genero} independiente`,
+                    'Festivales locales, moda streetwear/vintage, fotografía analógica y cultura visual'
+                ]
+            };
+
+            const algoritmos = [
+                {
+                    plataforma: 'Spotify (Radio y Discover Weekly)',
+                    afinidad: projectData.spotify ? 'Alta (Perfil listo para entrenar)' : 'Pendiente (Falta conectar perfil)',
+                    senalesClave: 'Tasa de guardados > 30% y Skip Rate < 25% en los primeros 30 segundos.',
+                    accion: `Usa a ${selectedRefNames.slice(0, 2).join(' y ') || 'tus referentes'} como puente: busca entrar a playlists independientes donde ellos ya aparezcan para entrenar el algoritmo de "Los fans también escuchan".`
+                },
+                {
+                    plataforma: 'TikTok & Instagram Reels',
+                    afinidad: 'Muy Alta (Motor principal de descubrimiento)',
+                    senalesClave: 'Retención en los primeros 3 segundos, repeticiones (loops) y guardados del video.',
+                    accion: `Publica micro-piezas de 15-20s enfocadas en el clímax emocional de tu canción (${genero}). Evita intros largos y usa texto en pantalla que conecte con el mood de tu público meta.`
+                },
+                {
+                    plataforma: 'YouTube & Shorts',
+                    afinidad: 'Media-Alta (Fidelización y búsqueda)',
+                    senalesClave: 'Porcentaje de reproducción promedio y clics desde Shorts hacia el video oficial o sesión en vivo.',
+                    accion: 'Sube Visualizers en loop o sesiones acústicas crudas. El algoritmo de YouTube premia el tiempo de sesión y posiciona muy bien búsquedas tipo "similar a [Referente]".'
+                }
+            ];
+
+            const riesgos = [];
+            if (!projectData.spotify) {
+                riesgos.push('No ingresaste link de Spotify/YouTube: sin catálogo indexado o Spotify for Artists activo, pierdes el acceso a Release Radar.');
+            }
+            if (!projectData.igScreenshot) {
+                riesgos.push('Sin auditoría visual de Instagram: si tu bio no tiene un enlace directo (Linktree/Smartlink) y una estética coherente, el tráfico de TikTok no convertirá en seguidores.');
+            }
+            if (projectData.presupuesto.includes('$0')) {
+                riesgos.push('Presupuesto Guerrilla ($0): dependerás 100% de volumen orgánico (mínimo 4-5 videos por semana) y colaboraciones con otros artistas locales de tu mismo nivel.');
+            }
+            if (projectData.etapa.includes('Iniciando')) {
+                riesgos.push('Etapa Inicial: evita lanzar un álbum completo de golpe. El algoritmo premia la constancia; lanza sencillos cada 5 a 6 semanas para acumular señales.');
+            }
+
+            return { score, publicoMeta, algoritmos, riesgos };
+        }
+
+        // --- ICONOS SVG (CYBERPUNK NEON EDITION) ---
+        const ICONS = {
+            music: '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-cyber-cyan filter drop-shadow-[0_0_8px_rgba(0,240,255,0.7)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+            spotify: '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-cyber-neonGreen shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.494 17.307c-.215.352-.676.463-1.028.248-2.816-1.721-6.36-2.111-10.536-1.157-.402.092-.801-.16-.893-.562-.092-.403.16-.802.562-.894 4.571-1.045 8.492-.598 11.647 1.337.352.215.463.676.248 1.028zm1.467-3.262c-.27.44-.847.579-1.287.309-3.224-1.982-8.139-2.555-11.953-1.398-.497.151-1.024-.136-1.175-.633-.151-.496.136-1.024.633-1.175 4.359-1.322 9.776-.684 13.473 1.589.44.27.579.847.309 1.287zm.126-3.411c-3.866-2.296-10.248-2.508-13.941-1.387-.593.18-1.222-.164-1.402-.757-.18-.593.164-1.222.757-1.402 4.244-1.289 11.289-1.043 15.733 1.595.533.316.708 1.011.392 1.544-.316.533-1.011.708-1.544.392z"/></svg>',
+            arrowRight: '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-cyber-cyan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>',
+            lock: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-cyber-cyan/70 absolute left-3.5 top-3.5 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+            lockSmall: '<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+            checkGreen: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-cyber-neonGreen filter drop-shadow-[0_0_6px_rgba(0,255,136,0.6)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>',
+            checkSmall: '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-cyber-neonGreen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>',
+            checkPurple: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-cyber-pink shrink-0 filter drop-shadow-[0_0_8px_rgba(255,0,127,0.7)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>',
+            upload: '<svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-cyber-cyan mb-2 filter drop-shadow-[0_0_6px_rgba(0,240,255,0.4)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>',
+            search: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-cyber-cyan/80 absolute left-4 top-3.5 pointer-events-none filter drop-shadow-[0_0_4px_rgba(0,240,255,0.5)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>',
+            x: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hover:text-cyber-pink transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
+            xSmall: '<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
+            instagram: '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-cyber-pink filter drop-shadow-[0_0_4px_rgba(255,0,127,0.5)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>',
+            instagramTab: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-cyber-pink filter drop-shadow-[0_0_6px_rgba(255,0,127,0.4)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>',
+            chevronRight: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>',
+            dashboard: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-cyber-cyan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>',
+            calendar: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-cyber-cyan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>',
+            megaphone: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-cyber-amber" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>',
+            fileText: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-cyber-pink" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>',
+            playCircle: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-cyber-pink shrink-0 filter drop-shadow-[0_0_6px_rgba(255,0,127,0.5)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>',
+            sparkles: '<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-cyber-amber filter drop-shadow-[0_0_4px_rgba(255,183,3,0.7)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>',
+            clock: '<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-cyber-cyan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+            checkSquare: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-cyber-neonGreen shrink-0 mt-0.5 filter drop-shadow-[0_0_6px_rgba(0,255,136,0.6)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>',
+            square: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-cyber-700 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>',
+            activity: '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-cyber-cyan filter drop-shadow-[0_0_6px_rgba(0,240,255,0.6)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
+            trendingUp: '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-cyber-neonGreen filter drop-shadow-[0_0_6px_rgba(0,255,136,0.5)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
+            target: '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-cyber-cyan filter drop-shadow-[0_0_6px_rgba(0,240,255,0.5)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+            users: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-cyber-purple filter drop-shadow-[0_0_6px_rgba(157,78,221,0.5)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+            mapPin: '<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-cyber-cyan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>',
+            cpu: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-cyber-cyan filter drop-shadow-[0_0_6px_rgba(0,240,255,0.5)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>',
+            shieldAlert: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-rose-500 filter drop-shadow-[0_0_6px_rgba(244,63,94,0.6)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><line x1="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>',
+            alertTriangle: '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-cyber-amber shrink-0 mt-0.5 filter drop-shadow-[0_0_6px_rgba(255,183,3,0.6)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>'
+        };
+
+        // --- ESTADO GLOBAL ---
+        const state = {
+            step: 0,
+            loading: false,
+            auth: { proyecto: '', pin: '' },
+            projectData: {
+                spotify: '',
+                instagram: '',
+                etapa: 'Iniciando (Aún no lanzo música)',
+                presupuesto: 'Guerrilla ($0 - Orgánico)',
+                generoPrincipal: GENEROS_PRINCIPALES[0],
+                subgeneros: '',
+                igScreenshot: null,
+                igScreenshotName: ''
+            },
+            searchQuery: '',
+            liveResults: [],
+            isSearchingSpotify: false,
+            spotifyConnected: false,
+            selectedRefIds: [],
+            activeTab: 'diagnostico',
+            completedTasks: [],
+            igFile: null,
+            aiDiagnostico: null,
+            errorMsg: ''
+        };
+
+        // --- FUNCIONES DE ESTADO ---
+        function setStep(newStep) {
+            state.step = newStep;
+            render();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function setActiveTab(tab) {
+            state.activeTab = tab;
+            render();
+        }
+
+        function toggleTask(taskId) {
+            const index = state.completedTasks.indexOf(taskId);
+            if (index > -1) {
+                state.completedTasks.splice(index, 1);
+            } else {
+                state.completedTasks.push(taskId);
+            }
+            render();
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const projInput = document.getElementById('login-proyecto');
+            const pinInput = document.getElementById('login-pin');
+            if (projInput && pinInput) {
+                state.auth.proyecto = projInput.value.trim();
+                state.auth.pin = pinInput.value.trim();
+                if (state.auth.proyecto && state.auth.pin.length === 4) {
+                    setStep(1);
+                }
+            }
+        }
+
+        function handleScreenshotUpload(file) {
+            if (file) {
+                state.igFile = file;
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    state.projectData.igScreenshot = e.target.result;
+                    state.projectData.igScreenshotName = file.name;
+                    render();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeScreenshot() {
+            state.igFile = null;
+            state.projectData.igScreenshot = null;
+            state.projectData.igScreenshotName = '';
+            render();
+        }
+
+        function toggleRef(id) {
+            // Si es un artista de Spotify en vivo, registrarlo para que las pills lo encuentren
+            if (typeof id === 'string' && id.startsWith('sp_')) {
+                const liveArt = state.liveResults.find(a => a.id === id) || liveArtistsRegistry[id];
+                if (liveArt) liveArtistsRegistry[id] = liveArt;
+            }
+            const index = state.selectedRefIds.indexOf(id);
+            if (index > -1) {
+                state.selectedRefIds.splice(index, 1);
+            } else {
+                if (state.selectedRefIds.length < 5) {
+                    state.selectedRefIds.push(id);
+                }
+            }
+            render();
+        }
+
+        const fileToBase64 = (file) => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = (error) => reject(error);
+        });
+
+        async function handleGenerateWithGemini() {
+            state.loading = true;
+            state.errorMsg = '';
+            render();
+
+            const selectedRefNames = state.selectedRefIds
+                .map(id => findArtistAnywhere(id)?.nombre)
+                .filter(Boolean);
+
+            try {
+                let igImageBase64 = null;
+                let igImageMimeType = null;
+
+                if (state.igFile) {
+                    igImageBase64 = await fileToBase64(state.igFile);
+                    igImageMimeType = state.igFile.type;
+                }
+
+                const res = await fetch('/api/analizar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        proyecto: state.auth.proyecto,
+                        projectData: state.projectData,
+                        referentes: selectedRefNames,
+                        igImageBase64,
+                        igImageMimeType
+                    })
+                });
+
+                const data = await res.json();
+                if (!data.ok) throw new Error(data.error || 'Error al conectar con la API.');
+
+                state.aiDiagnostico = data.diagnostico;
+                state.step = 3;
+            } catch (err) {
+                console.warn('Modo estático / API Route no disponible, usando motor local enriquecido:', err);
+                const localDiag = generarDiagnosticoAvanzado(state.projectData, selectedRefNames);
+                if (state.projectData.igScreenshot) {
+                    localDiag.auditoriaInstagram = `Auditoría Visual de Instagram para @${state.auth.proyecto.toLowerCase().replace(/\\s+/g, '')}:\n- Biografía: Tu perfil comunica el nicho (${state.projectData.generoPrincipal}), pero requiere un Smartlink unificado (Linktree/Beacons) para redirigir tráfico.\n- Coherencia visual: El feed presenta una estética de guerrilla adecuada para tu etapa (${state.projectData.etapa}).\n- Acción inmediata: Agrega historias destacadas con "Música", "En Vivo" y "Proceso" para aumentar la conversión de visitantes en seguidores.`;
+                }
+                state.aiDiagnostico = localDiag;
+                state.step = 3;
+            } finally {
+                state.loading = false;
+                render();
+            }
+        }
+
+        // --- RENDERIZADO REACTIVO ---
+        function render() {
+            const app = document.getElementById('app');
+            if (!app) return;
+
+            // Nombres de referentes seleccionados
+            const selectedRefNames = state.selectedRefIds
+                .map(id => findArtistAnywhere(id)?.nombre)
+                .filter(Boolean);
+
+            // 1. LOGIN / REGISTRO
+            if (state.step === 0) {
+                app.innerHTML = `
+                    <div class="min-h-screen cyber-bg flex items-center justify-center p-4 relative overflow-hidden font-sans">
+                        <!-- Neon ambient lights -->
+                        <div class="absolute -top-32 -left-32 w-96 h-96 bg-cyber-cyan/15 rounded-full blur-3xl pointer-events-none"></div>
+                        <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-cyber-pink/15 rounded-full blur-3xl pointer-events-none"></div>
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-cyber-purple/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                        <div class="max-w-md w-full cyber-glass border border-cyber-cyan/30 p-8 rounded-2xl shadow-[0_0_50px_rgba(0,240,255,0.15)] relative backdrop-blur-xl">
+                            <!-- Corner HUD markers -->
+                            <div class="absolute top-3 left-4 text-[10px] font-mono text-cyber-cyan/60 tracking-wider">┌── [AUTH.GATE]</div>
+                            <div class="absolute top-3 right-4 text-[10px] font-mono text-cyber-pink/60 tracking-wider">[SYS: ARMED] ──┐</div>
+                            <div class="absolute bottom-3 left-4 text-[10px] font-mono text-cyber-cyan/40 tracking-wider">└── 0x9AF // NET</div>
+                            <div class="absolute bottom-3 right-4 text-[10px] font-mono text-cyber-neonGreen/60 tracking-wider">SEC_LVL: 01 ──┘</div>
+
+                            <div class="flex justify-center mb-5">
+                                <div class="p-4 bg-cyber-cyan/10 rounded-2xl border border-cyber-cyan/40 shadow-[0_0_20px_rgba(0,240,255,0.3)]">
+                                    ${ICONS.music}
+                                </div>
+                            </div>
+                            <h1 class="text-4xl font-orbitron font-black tracking-wider text-center text-gradient-cyber drop-shadow-[0_0_15px_rgba(0,240,255,0.4)]">ANTI-FLOP</h1>
+                            <div class="flex items-center justify-center gap-2 mt-1 mb-3 font-mono text-[10px] text-cyber-cyan uppercase tracking-widest">
+                                <span class="w-2 h-2 rounded-full bg-cyber-neonGreen animate-ping"></span>
+                                NEURAL MUSIC INTELLIGENCE // v2.4
+                            </div>
+                            <p class="text-zinc-400 text-center mb-7 text-xs leading-relaxed">
+                                Estrategia musical basada en datos de Spotify en tiempo real e inteligencia artificial. Ingresa tu proyecto y PIN de 4 dígitos.
+                            </p>
+
+                            <form id="login-form" class="space-y-5">
+                                <div>
+                                    <label class="block text-xs font-mono uppercase tracking-wider text-zinc-300 mb-1.5 flex items-center justify-between">
+                                        <span>Nombre del Proyecto</span>
+                                        <span class="text-cyber-cyan text-[10px]">[INPUT_ID]</span>
+                                    </label>
+                                    <input
+                                        id="login-proyecto"
+                                        required
+                                        type="text"
+                                        placeholder="Ej. Los Tempestades"
+                                        class="w-full bg-cyber-950/90 border border-cyber-cyan/30 rounded-xl p-3.5 text-white placeholder-zinc-600 focus:outline-none focus:border-cyber-cyan focus:ring-1 focus:ring-cyber-cyan font-mono text-sm transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]"
+                                        value="${state.auth.proyecto}"
+                                    />
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-mono uppercase tracking-wider text-zinc-300 mb-1.5 flex items-center justify-between">
+                                        <span>PIN Secreto (4 dígitos)</span>
+                                        <span class="text-cyber-pink text-[10px]">[CRYPT_PASS]</span>
+                                    </label>
+                                    <div class="relative">
+                                        <div class="absolute left-3.5 top-3.5 pointer-events-none">
+                                            ${ICONS.lock}
+                                        </div>
+                                        <input
+                                            id="login-pin"
+                                            required
+                                            type="password"
+                                            pattern="\\d{4}"
+                                            maxlength="4"
+                                            placeholder="••••"
+                                            class="w-full bg-cyber-950/90 border border-cyber-pink/30 rounded-xl p-3.5 pl-11 text-cyber-pink placeholder-zinc-600 focus:outline-none focus:border-cyber-pink focus:ring-1 focus:ring-cyber-pink text-center tracking-[0.8em] font-mono text-lg font-bold transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]"
+                                            value="${state.auth.pin}"
+                                        />
+                                    </div>
+                                </div>
+                                <button type="submit" class="w-full cyber-btn-gradient text-black font-orbitron font-black text-xs tracking-widest py-4 rounded-xl flex items-center justify-center gap-2 shadow-[0_0_25px_rgba(0,240,255,0.35)] hover:shadow-[0_0_35px_rgba(255,0,127,0.5)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer">
+                                    INICIAR TERMINAL ANTI-FLOP ${ICONS.arrowRight}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                `;
+
+                const form = document.getElementById('login-form');
+                form.onsubmit = handleLogin;
+                const pinInput = document.getElementById('login-pin');
+                pinInput.oninput = (e) => {
+                    e.target.value = e.target.value.replace(/\D/g, '');
+                    state.auth.pin = e.target.value;
+                };
+                const projInput = document.getElementById('login-proyecto');
+                projInput.oninput = (e) => { state.auth.proyecto = e.target.value; };
+                return;
+            }
+
+            // 2. ONBOARDING / PERFIL DEL PROYECTO
+            if (state.step === 1) {
+                const optionsHtml = GENEROS_PRINCIPALES.map(g =>
+                    `<option value="${g}" ${state.projectData.generoPrincipal === g ? 'selected' : ''}>${g}</option>`
+                ).join('');
+
+                app.innerHTML = `
+                    <div class="min-h-screen cyber-bg p-6 text-zinc-100 pb-24 relative overflow-hidden font-sans">
+                        <!-- Neon ambient lights -->
+                        <div class="absolute top-0 right-1/4 w-96 h-96 bg-cyber-purple/10 rounded-full blur-3xl pointer-events-none"></div>
+                        <div class="absolute bottom-10 left-10 w-96 h-96 bg-cyber-cyan/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                        <div class="max-w-2xl mx-auto relative z-10">
+                            <div class="flex items-center justify-between mb-3">
+                                <div>
+                                    <div class="font-mono text-[10px] text-cyber-cyan tracking-widest uppercase mb-1 flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-cyber-cyan animate-ping"></span>
+                                        // TELEMETRÍA Y CALIBRACIÓN
+                                    </div>
+                                    <h2 class="text-3xl font-orbitron font-black text-white tracking-wide">
+                                        <span class="text-cyber-cyan">01 //</span> Perfil del Proyecto
+                                    </h2>
+                                </div>
+                                <span class="text-xs font-mono font-bold bg-cyber-cyan/10 text-cyber-cyan px-3 py-1.5 rounded-full border border-cyber-cyan/40 shadow-[0_0_10px_rgba(0,240,255,0.2)]">
+                                    [MODO: CALIBRACIÓN]
+                                </span>
+                            </div>
+                            <p class="text-zinc-400 mb-8 text-sm">
+                                Calibra el estado operativo de <span class="text-cyber-cyan font-bold font-mono">${state.auth.proyecto || 'tu proyecto'}</span> para alimentar la red neuronal.
+                            </p>
+
+                            <div class="cyber-glass border border-cyber-cyan/30 p-8 rounded-2xl shadow-[0_0_40px_rgba(0,0,0,0.8)] relative space-y-6">
+                                <!-- Corner HUD markers -->
+                                <div class="absolute top-3 left-4 text-[10px] font-mono text-cyber-cyan/50">┌── [DATA.INPUT]</div>
+                                <div class="absolute top-3 right-4 text-[10px] font-mono text-cyber-pink/50">[MATRIX: READY] ──┐</div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                                    <div>
+                                        <label class="block text-xs font-mono uppercase tracking-wider text-zinc-300 mb-2 flex items-center justify-between">
+                                            <span>Género Principal (20 opciones)</span>
+                                            <span class="text-cyber-cyan text-[10px]">[CAT_GENRE]</span>
+                                        </label>
+                                        <select id="input-genero" class="w-full bg-cyber-950/90 border border-cyber-cyan/30 rounded-xl p-3 text-white font-mono text-sm focus:outline-none focus:border-cyber-cyan focus:ring-1 focus:ring-cyber-cyan transition-all">
+                                            ${optionsHtml}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-mono uppercase tracking-wider text-zinc-300 mb-2 flex items-center justify-between">
+                                            <span>Subgéneros / Etiquetas</span>
+                                            <span class="text-cyber-pink text-[10px]">[TAGS]</span>
+                                        </label>
+                                        <input
+                                            id="input-subgeneros"
+                                            type="text"
+                                            placeholder="Ej. Sad Sierreño, Lo-fi, 90s..."
+                                            class="w-full bg-cyber-950/90 border border-cyber-pink/30 rounded-xl p-3 text-white font-mono text-sm focus:outline-none focus:border-cyber-pink focus:ring-1 focus:ring-cyber-pink transition-all"
+                                            value="${state.projectData.subgeneros}"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-mono uppercase tracking-wider text-zinc-300 mb-2 flex items-center justify-between">
+                                            <span>Etapa del Proyecto</span>
+                                            <span class="text-cyber-neonGreen text-[10px]">[PHASE]</span>
+                                        </label>
+                                        <select id="input-etapa" class="w-full bg-cyber-950/90 border border-cyber-cyan/30 rounded-xl p-3 text-white font-mono text-sm focus:outline-none focus:border-cyber-cyan focus:ring-1 focus:ring-cyber-cyan transition-all">
+                                            <option ${state.projectData.etapa === 'Iniciando (Aún no lanzo música)' ? 'selected' : ''}>Iniciando (Aún no lanzo música)</option>
+                                            <option ${state.projectData.etapa === 'Emergente (1 a 5 sencillos)' ? 'selected' : ''}>Emergente (1 a 5 sencillos)</option>
+                                            <option ${state.projectData.etapa === 'En Crecimiento (Ya tengo oyentes fijos)' ? 'selected' : ''}>En Crecimiento (Ya tengo oyentes fijos)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-mono uppercase tracking-wider text-zinc-300 mb-2 flex items-center justify-between">
+                                            <span>Presupuesto Mensual</span>
+                                            <span class="text-cyber-amber text-[10px]">[FUNDS]</span>
+                                        </label>
+                                        <select id="input-presupuesto" class="w-full bg-cyber-950/90 border border-cyber-amber/30 rounded-xl p-3 text-white font-mono text-sm focus:outline-none focus:border-cyber-amber focus:ring-1 focus:ring-cyber-amber transition-all">
+                                            <option ${state.projectData.presupuesto === 'Guerrilla ($0 - Orgánico)' ? 'selected' : ''}>Guerrilla ($0 - Orgánico)</option>
+                                            <option ${state.projectData.presupuesto === 'Bajo ($500 - $2,000 MXN)' ? 'selected' : ''}>Bajo ($500 - $2,000 MXN)</option>
+                                            <option ${state.projectData.presupuesto === 'Medio ($2,000 - $10,000 MXN)' ? 'selected' : ''}>Medio ($2,000 - $10,000 MXN)</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="md:col-span-2">
+                                        <label class="block text-xs font-mono uppercase tracking-wider text-zinc-300 mb-2 flex items-center justify-between">
+                                            <span class="flex items-center gap-2">Link de Spotify o YouTube</span>
+                                            <span class="text-cyber-neonGreen text-[10px]">[API_ENDPOINT]</span>
+                                        </label>
+                                        <input
+                                            id="input-spotify"
+                                            type="url"
+                                            placeholder="https://open.spotify.com/artist/..."
+                                            class="w-full bg-cyber-950/90 border border-cyber-neonGreen/30 rounded-xl p-3 text-white font-mono text-sm focus:outline-none focus:border-cyber-neonGreen focus:ring-1 focus:ring-cyber-neonGreen transition-all placeholder-zinc-600"
+                                            value="${state.projectData.spotify}"
+                                        />
+                                    </div>
+
+                                    <!-- SUBIDA DE CAPTURA DE INSTAGRAM -->
+                                    <div class="md:col-span-2">
+                                        <label class="block text-xs font-mono uppercase tracking-wider text-zinc-300 mb-2 flex items-center gap-2">
+                                            ${ICONS.instagram}
+                                            <span>Captura de pantalla de tu Instagram (Auditoría Visual de Feed & Bio)</span>
+                                        </label>
+
+                                        ${!state.projectData.igScreenshot ? `
+                                            <label class="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-cyber-pink/40 hover:border-cyber-pink rounded-xl cursor-pointer bg-cyber-950/60 hover:bg-cyber-pink/5 transition-all p-6 text-center group">
+                                                <div class="p-3 bg-cyber-pink/10 rounded-full border border-cyber-pink/30 group-hover:scale-110 transition-transform mb-2">
+                                                    ${ICONS.upload}
+                                                </div>
+                                                <span class="text-sm text-zinc-200 font-semibold font-orbitron tracking-wide">Haz clic para cargar imagen (PNG o JPG)</span>
+                                                <span class="text-[11px] font-mono text-zinc-500 mt-1">La IA analizará paleta cromática, enlaces bio y coherencia estética</span>
+                                                <input id="input-screenshot" type="file" accept="image/*" class="hidden" />
+                                            </label>
+                                        ` : `
+                                            <div class="flex items-center justify-between bg-cyber-950/90 border border-cyber-neonGreen/40 p-4 rounded-xl shadow-[0_0_20px_rgba(0,255,136,0.1)]">
+                                                <div class="flex items-center gap-4">
+                                                    <img src="${state.projectData.igScreenshot}" alt="Preview IG" class="w-16 h-16 object-cover rounded-lg border-2 border-cyber-neonGreen/60 shadow-[0_0_10px_rgba(0,255,136,0.2)]" />
+                                                    <div>
+                                                        <p class="text-sm font-orbitron font-bold text-cyber-neonGreen flex items-center gap-1.5">
+                                                            ${ICONS.checkGreen} CAPTURA REGISTRADA
+                                                        </p>
+                                                        <p class="text-xs font-mono text-zinc-400 truncate max-w-xs mt-0.5">${state.projectData.igScreenshotName}</p>
+                                                    </div>
+                                                </div>
+                                                <button id="btn-remove-screenshot" type="button" class="p-2 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors border border-transparent hover:border-red-500/30">
+                                                    ${ICONS.x}
+                                                </button>
+                                            </div>
+                                        `}
+                                    </div>
+                                </div>
+
+                                <div class="pt-5 flex justify-between items-center border-t border-cyber-cyan/20">
+                                    <button id="btn-back-login" class="font-mono text-xs text-zinc-400 hover:text-cyber-cyan transition-colors flex items-center gap-1">
+                                        ← [VOLVER AL LOGIN]
+                                    </button>
+                                    <button id="btn-step2" class="cyber-btn-gradient text-black px-8 py-3.5 rounded-xl font-orbitron font-black text-xs tracking-widest flex items-center gap-2 shadow-[0_0_25px_rgba(0,240,255,0.35)] hover:shadow-[0_0_35px_rgba(255,0,127,0.5)] transition-all transform hover:-translate-y-0.5 cursor-pointer">
+                                        SIGUIENTE FASE: BENCHMARKING ${ICONS.chevronRight}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Event Listeners
+                document.getElementById('input-genero').onchange = (e) => { state.projectData.generoPrincipal = e.target.value; };
+                document.getElementById('input-subgeneros').oninput = (e) => { state.projectData.subgeneros = e.target.value; };
+                document.getElementById('input-etapa').onchange = (e) => { state.projectData.etapa = e.target.value; };
+                document.getElementById('input-presupuesto').onchange = (e) => { state.projectData.presupuesto = e.target.value; };
+                document.getElementById('input-spotify').oninput = (e) => { state.projectData.spotify = e.target.value; };
+
+                const fileInput = document.getElementById('input-screenshot');
+                if (fileInput) {
+                    fileInput.onchange = (e) => handleScreenshotUpload(e.target.files[0]);
+                }
+                const btnRemove = document.getElementById('btn-remove-screenshot');
+                if (btnRemove) {
+                    btnRemove.onclick = removeScreenshot;
+                }
+                document.getElementById('btn-back-login').onclick = () => setStep(0);
+                document.getElementById('btn-step2').onclick = () => setStep(2);
+                return;
+            }
+
+            // 3. BENCHMARKING Y REFERENCIAS (45 ARTISTAS + BUSCADOR)
+            if (state.step === 2) {
+                if (state.loading) {
+                    app.innerHTML = `
+                        <div class="min-h-screen cyber-bg flex flex-col items-center justify-center p-6 text-zinc-100 relative overflow-hidden font-sans">
+                            <!-- Neon ambient lights -->
+                            <div class="absolute -top-32 -left-32 w-96 h-96 bg-cyber-cyan/20 rounded-full blur-3xl pointer-events-none"></div>
+                            <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-cyber-pink/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                            <div class="max-w-md w-full cyber-glass border border-cyber-cyan/40 rounded-2xl p-8 flex flex-col items-center text-center space-y-6 shadow-[0_0_50px_rgba(0,240,255,0.25)] relative backdrop-blur-xl">
+                                <div class="absolute top-3 left-4 text-[10px] font-mono text-cyber-cyan/60">┌── [PROCESS.NODE]</div>
+                                <div class="absolute top-3 right-4 text-[10px] font-mono text-cyber-pink/60">[GEMINI.IA] ──┐</div>
+
+                                <div class="relative w-20 h-20 flex items-center justify-center my-2">
+                                    <div class="absolute inset-0 border-4 border-cyber-cyan border-t-transparent rounded-full spinner"></div>
+                                    <div class="absolute inset-2 border-4 border-cyber-pink border-b-transparent rounded-full spinner-rev"></div>
+                                    <div class="w-3.5 h-3.5 rounded-full bg-cyber-neonGreen animate-ping"></div>
+                                </div>
+                                <div>
+                                    <div class="font-mono text-[10px] text-cyber-cyan tracking-widest uppercase mb-1.5 flex items-center justify-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-cyber-neonGreen animate-pulse"></span>
+                                        // NEURAL MATRIX EN PROCESO
+                                    </div>
+                                    <p class="text-xl font-orbitron font-black text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink">
+                                        ANALIZANDO TELEMETRÍA
+                                    </p>
+                                    <p class="text-zinc-400 font-mono text-xs mt-3 leading-relaxed">
+                                        Cruzando señales algorítmicas de Spotify, TikTok y diagnóstico visual del feed con IA...
+                                    </p>
+                                </div>
+                                <div class="w-full bg-cyber-950 border border-cyber-cyan/20 rounded-full h-1.5 overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink animate-pulse" style="width: 85%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const q = state.searchQuery.toLowerCase().trim();
+
+                let displayArtists = [];
+                let cardsHtml = '';
+
+                if (state.isSearchingSpotify) {
+                    cardsHtml = `
+                        <div class="col-span-full text-center py-12 flex flex-col items-center justify-center space-y-3 cyber-glass border border-cyber-neonGreen/30 rounded-2xl p-8">
+                            <div class="w-10 h-10 border-3 border-cyber-neonGreen border-t-transparent rounded-full spinner"></div>
+                            <p class="text-sm font-orbitron font-bold text-cyber-neonGreen">CONSULTANDO SPOTIFY WEB API EN TIEMPO REAL...</p>
+                            <p class="text-xs font-mono text-zinc-400">Rastreando "${state.searchQuery}" en la base global de artistas...</p>
+                        </div>
+                    `;
+                } else if (state.liveResults.length > 0) {
+                    displayArtists = state.liveResults;
+                } else if (q.length >= 2) {
+                    const localMatches = MOCK_REFERENTES.filter(a =>
+                        a.nombre.toLowerCase().includes(q) || a.genero.toLowerCase().includes(q)
+                    );
+                    if (localMatches.length > 0) {
+                        displayArtists = localMatches;
+                    } else {
+                        cardsHtml = `
+                            <div class="col-span-full text-center py-12 cyber-glass border border-zinc-800 rounded-2xl p-8">
+                                <p class="text-sm font-mono text-zinc-400">No se encontraron artistas para "${state.searchQuery}".</p>
+                                <p class="text-xs font-mono text-zinc-500 mt-1">Prueba con otro término o selecciona del catálogo recomendado.</p>
+                            </div>
+                        `;
+                    }
+                } else {
+                    displayArtists = MOCK_REFERENTES;
+                }
+
+                const pillsHtml = state.selectedRefIds.length > 0 ? `
+                    <div class="flex flex-wrap items-center gap-2 mb-6 p-4 cyber-glass border border-cyber-pink/30 rounded-xl shadow-[0_0_20px_rgba(255,0,127,0.15)]">
+                        <span class="text-xs font-mono uppercase text-cyber-pink tracking-wider mr-2 font-bold flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-cyber-pink animate-pulse"></span>
+                            ANCLAJES ACTIVOS:
+                        </span>
+                        ${state.selectedRefIds.map(id => {
+                    const art = findArtistAnywhere(id);
+                    return `
+                                <span class="inline-flex items-center gap-2 bg-cyber-pink/15 border border-cyber-pink/50 text-cyber-pink text-xs font-mono font-bold px-3 py-1.5 rounded-full shadow-[0_0_10px_rgba(255,0,127,0.25)]">
+                                    ${art && art.img ? `<img src="${art.img}" alt="${art.nombre}" class="w-5 h-5 rounded-full object-cover border border-cyber-pink">` : ''}
+                                    ${art ? art.nombre : id}
+                                    <button onclick="toggleRef('${id}')" class="hover:text-white p-0.5 transition-colors">${ICONS.xSmall}</button>
+                                </span>
+                            `;
+                }).join('')}
+                    </div>
+                ` : '';
+
+                if (!cardsHtml && displayArtists.length > 0) {
+                    cardsHtml = displayArtists.map(artista => {
+                        const isSelected = state.selectedRefIds.includes(artista.id);
+                        const isDisabled = !isSelected && state.selectedRefIds.length >= 5;
+                        const popBar = artista.popularidad != null ? `
+                            <div class="flex items-center gap-2 mt-1.5">
+                                <div class="flex-1 h-1.5 bg-cyber-950 rounded-full overflow-hidden border border-zinc-800">
+                                    <div class="h-full rounded-full ${artista.popularidad > 60 ? 'bg-gradient-to-r from-cyber-neonGreen to-cyber-cyan' : artista.popularidad > 30 ? 'bg-gradient-to-r from-cyber-amber to-cyber-pink' : 'bg-zinc-600'}" style="width:${artista.popularidad}%"></div>
+                                </div>
+                                <span class="text-[10px] font-mono text-cyber-cyan w-6 text-right">${artista.popularidad}</span>
+                            </div>
+                        ` : '';
+                        const followersTag = artista.seguidores ? `<span class="text-[10px] font-mono text-zinc-400 bg-cyber-950/80 px-2 py-0.5 rounded border border-zinc-800">${formatFollowers(artista.seguidores)} seg.</span>` : '';
+                        return `
+                            <button
+                                type="button"
+                                ${isDisabled ? 'disabled' : ''}
+                                onclick="toggleRef('${artista.id}')"
+                                class="text-left p-4 rounded-xl border transition-all flex items-center justify-between gap-3 relative overflow-hidden cursor-pointer ${isSelected
+                                ? 'border-cyber-cyan bg-cyber-cyan/15 shadow-[0_0_25px_rgba(0,240,255,0.25)] ring-1 ring-cyber-cyan'
+                                : isDisabled
+                                    ? 'border-zinc-900 bg-zinc-950/40 opacity-30 cursor-not-allowed'
+                                    : 'border-cyber-cyan/20 bg-cyber-950/80 hover:border-cyber-cyan/60 hover:bg-cyber-900/60 hover:shadow-[0_0_15px_rgba(0,240,255,0.15)]'
+                            }"
+                            >
+                                <div class="flex items-center gap-3 min-w-0">
+                                    ${artista.img ? `<img src="${artista.img}" alt="${artista.nombre}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0 border-2 ${isSelected ? 'border-cyber-cyan shadow-[0_0_10px_rgba(0,240,255,0.4)]' : 'border-zinc-800'}">` : `<div class="w-12 h-12 rounded-xl bg-cyber-900 flex items-center justify-center flex-shrink-0 text-cyber-cyan font-orbitron font-bold border-2 ${isSelected ? 'border-cyber-cyan shadow-[0_0_10px_rgba(0,240,255,0.4)]' : 'border-zinc-800'}">${artista.nombre.charAt(0)}</div>`}
+                                    <div class="min-w-0 flex-1">
+                                        <div class="flex items-center gap-1.5 min-w-0">
+                                            <h4 class="font-orbitron font-bold text-sm truncate text-white">${artista.nombre}</h4>
+                                            ${artista.isLive ? '<span class="text-[9px] font-mono font-bold bg-cyber-neonGreen/20 text-cyber-neonGreen border border-cyber-neonGreen/40 px-1.5 py-0.5 rounded shadow-[0_0_6px_rgba(0,255,136,0.3)] flex-shrink-0">SPOTIFY</span>' : ''}
+                                        </div>
+                                        <p class="text-xs font-mono text-zinc-400 truncate mt-0.5">${artista.genero}</p>
+                                        ${popBar}
+                                    </div>
+                                    ${followersTag}
+                                </div>
+                                ${isSelected ? ICONS.checkPurple : ''}
+                            </button>
+                        `;
+                    }).join('');
+                }
+
+                // Render slots bar representation: [ ■ ■ ■ □ □ ]
+                const slotsArray = [0, 1, 2, 3, 4];
+                const slotsHtml = slotsArray.map(idx => {
+                    const filled = idx < state.selectedRefIds.length;
+                    return `<span class="inline-block w-3.5 h-3.5 rounded-sm ${filled ? 'bg-cyber-cyan shadow-[0_0_8px_rgba(0,240,255,0.7)]' : 'bg-cyber-900 border border-zinc-700'}"></span>`;
+                }).join(' ');
+
+                app.innerHTML = `
+                    <div class="min-h-screen cyber-bg p-6 text-zinc-100 pb-28 relative overflow-hidden font-sans">
+                        <!-- Neon ambient lights -->
+                        <div class="absolute top-0 right-1/4 w-96 h-96 bg-cyber-cyan/10 rounded-full blur-3xl pointer-events-none"></div>
+                        <div class="absolute bottom-10 left-10 w-96 h-96 bg-cyber-purple/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                        <div class="max-w-5xl mx-auto relative z-10">
+                            <div class="flex items-center justify-between mb-3">
+                                <div>
+                                    <div class="font-mono text-[10px] text-cyber-cyan tracking-widest uppercase mb-1 flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-cyber-cyan animate-ping"></span>
+                                        // PASO 02: BENCHMARKING DE MERCADO & RADAR SPOTIFY
+                                    </div>
+                                    <h2 class="text-3xl font-orbitron font-black text-white tracking-wide">
+                                        <span class="text-cyber-cyan">02 //</span> Radar de Artistas Referentes
+                                    </h2>
+                                </div>
+                                <button id="btn-back-profile" class="font-mono text-xs text-zinc-400 hover:text-cyber-cyan transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-zinc-800 hover:border-cyber-cyan/40 bg-cyber-950/60 cursor-pointer">
+                                    ← [CALIBRAR PERFIL]
+                                </button>
+                            </div>
+                            <p class="text-zinc-400 mb-6 text-sm">
+                                Busca y selecciona de 1 a 5 referentes que compartan audiencia con tu proyecto (<span class="text-cyber-cyan font-bold font-mono">${state.projectData.generoPrincipal}</span>).
+                            </p>
+
+                            <!-- Buscador conectado a Spotify API en vivo -->
+                            <div class="relative mb-3">
+                                <div class="absolute left-4 top-4 pointer-events-none">
+                                    ${ICONS.search}
+                                </div>
+                                <input
+                                    id="search-input"
+                                    type="text"
+                                    placeholder="Escribe el nombre de cualquier artista en Spotify..."
+                                    class="w-full bg-cyber-950/90 border border-cyber-neonGreen/40 rounded-xl py-3.5 pl-12 pr-12 text-white font-mono text-sm placeholder-zinc-500 focus:outline-none focus:border-cyber-neonGreen focus:ring-1 focus:ring-cyber-neonGreen shadow-[0_0_20px_rgba(0,255,136,0.15)] transition-all"
+                                    value="${state.searchQuery}"
+                                />
+                                ${state.isSearchingSpotify ? `<div class="absolute right-4 top-3.5"><div class="w-5 h-5 border-2 border-cyber-neonGreen border-t-transparent rounded-full spinner"></div></div>` : ''}
+                                ${state.searchQuery && !state.isSearchingSpotify ? `
+                                    <button id="btn-clear-search" class="absolute right-4 top-3.5 text-zinc-400 hover:text-cyber-pink transition-colors p-1 cursor-pointer">
+                                        ${ICONS.x}
+                                    </button>
+                                ` : ''}
+                            </div>
+                            <div class="flex items-center gap-3 mb-6 text-xs font-mono flex-wrap">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border ${state.spotifyConnected ? 'border-cyber-neonGreen/40 bg-cyber-neonGreen/10 text-cyber-neonGreen shadow-[0_0_8px_rgba(0,255,136,0.2)]' : 'border-zinc-800 bg-zinc-950 text-zinc-500'}">
+                                    <span class="w-2 h-2 rounded-full ${state.spotifyConnected ? 'bg-cyber-neonGreen animate-pulse' : 'bg-zinc-600'}"></span>
+                                    ${state.spotifyConnected ? 'SPOTIFY API CONECTADA EN VIVO' : 'CONECTANDO A SPOTIFY...'}
+                                </span>
+                                ${state.isSearchingSpotify ? '<span class="text-cyber-neonGreen font-semibold animate-pulse">· Rastreando Spotify en tiempo real...</span>' : ''}
+                                ${state.liveResults.length > 0 && !state.isSearchingSpotify ? `<span class="text-cyber-cyan">· ${state.liveResults.length} resultados encontrados en Spotify</span>` : ''}
+                                ${!q ? '<span class="text-zinc-500">· Mostrando catálogo recomendado (escribe para buscar artistas en vivo)</span>' : ''}
+                            </div>
+
+                            <!-- Pills seleccionados -->
+                            ${pillsHtml}
+
+                            <!-- Grid de artistas -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-8 max-h-[52vh] overflow-y-auto pr-2 custom-scroll">
+                                ${cardsHtml || '<div class="col-span-full text-center py-10 font-mono text-zinc-500">No se encontraron artistas.</div>'}
+                            </div>
+
+                            <!-- Barra inferior fija -->
+                            ${state.errorMsg ? `
+                                <div class="mb-4 p-4 cyber-glass border border-red-500/50 rounded-xl text-red-300 text-sm flex items-center gap-2 shadow-[0_0_20px_rgba(239,68,68,0.2)]">
+                                    ${ICONS.alertTriangle}
+                                    <span class="font-mono">${state.errorMsg}</span>
+                                </div>
+                            ` : ''}
+
+                            <div class="cyber-glass border border-cyber-cyan/40 p-5 rounded-2xl shadow-[0_0_30px_rgba(0,240,255,0.2)] flex flex-col sm:flex-row justify-between items-center gap-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-1.5">
+                                        ${slotsHtml}
+                                    </div>
+                                    <span class="font-mono text-xs text-zinc-300">
+                                        SELECCIONADOS: <strong class="text-cyber-cyan font-bold">${state.selectedRefIds.length}</strong> / 5
+                                    </span>
+                                </div>
+                                <button
+                                    id="btn-simulate-ai"
+                                    ${state.selectedRefIds.length === 0 || state.loading ? 'disabled' : ''}
+                                    class="cyber-btn-gradient disabled:opacity-30 disabled:cursor-not-allowed text-black px-8 py-3.5 rounded-xl font-orbitron font-black text-xs tracking-widest transition-all shadow-[0_0_25px_rgba(0,240,255,0.35)] hover:shadow-[0_0_35px_rgba(255,0,127,0.5)] active:scale-[0.99] flex items-center gap-2 cursor-pointer"
+                                >
+                                    ${state.loading ? 'PROCESANDO CON IA...' : 'GENERAR ESTRATEGIA CON GEMINI IA'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                const searchInput = document.getElementById('search-input');
+                if (searchInput) {
+                    searchInput.oninput = (e) => {
+                        state.searchQuery = e.target.value;
+                        const query = state.searchQuery.trim();
+
+                        clearTimeout(_searchDebounce);
+
+                        if (query.length >= 2) {
+                            state.isSearchingSpotify = true;
+                            state.liveResults = [];
+                            render();
+                            const inp = document.getElementById('search-input');
+                            if (inp) {
+                                inp.focus();
+                                inp.setSelectionRange(inp.value.length, inp.value.length);
+                            }
+
+                            _searchDebounce = setTimeout(async () => {
+                                const results = await searchSpotifyLive(query);
+                                if (state.searchQuery.trim().toLowerCase() === query.toLowerCase()) {
+                                    state.liveResults = results;
+                                    state.isSearchingSpotify = false;
+                                    render();
+                                    const inpFinal = document.getElementById('search-input');
+                                    if (inpFinal) {
+                                        inpFinal.focus();
+                                        inpFinal.setSelectionRange(inpFinal.value.length, inpFinal.value.length);
+                                    }
+                                }
+                            }, 350);
+                        } else {
+                            state.liveResults = [];
+                            state.isSearchingSpotify = false;
+                            render();
+                            const inp = document.getElementById('search-input');
+                            if (inp) {
+                                inp.focus();
+                                inp.setSelectionRange(inp.value.length, inp.value.length);
+                            }
+                        }
+                    };
+
+                    searchInput.onkeydown = async (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            clearTimeout(_searchDebounce);
+                            const query = state.searchQuery.trim();
+                            if (query.length >= 2) {
+                                state.isSearchingSpotify = true;
+                                state.liveResults = [];
+                                render();
+                                const inp = document.getElementById('search-input');
+                                if (inp) {
+                                    inp.focus();
+                                    inp.setSelectionRange(inp.value.length, inp.value.length);
+                                }
+                                const results = await searchSpotifyLive(query);
+                                if (state.searchQuery.trim().toLowerCase() === query.toLowerCase()) {
+                                    state.liveResults = results;
+                                    state.isSearchingSpotify = false;
+                                    render();
+                                    const inpFinal = document.getElementById('search-input');
+                                    if (inpFinal) {
+                                        inpFinal.focus();
+                                        inpFinal.setSelectionRange(inpFinal.value.length, inpFinal.value.length);
+                                    }
+                                }
+                            }
+                        }
+                    };
+                }
+
+                const clearBtn = document.getElementById('btn-clear-search');
+                if (clearBtn) {
+                    clearBtn.onclick = () => {
+                        state.searchQuery = '';
+                        state.liveResults = [];
+                        state.isSearchingSpotify = false;
+                        clearTimeout(_searchDebounce);
+                        render();
+                        const input = document.getElementById('search-input');
+                        if (input) input.focus();
+                    };
+                }
+
+                document.getElementById('btn-back-profile').onclick = () => setStep(1);
+                const btnSimulate = document.getElementById('btn-simulate-ai');
+                if (btnSimulate) btnSimulate.onclick = handleGenerateWithGemini;
+                return;
+            }
+
+            // 4. EL DASHBOARD (RESULTADOS COMPLETOS - MAINFRAME CYBERPUNK)
+            if (state.step === 3) {
+                let mainContentHtml = '';
+
+                // TAB 1: DIAGNÓSTICO COMPLEJO Y COMPLETO
+                if (state.activeTab === 'diagnostico') {
+                    const diagnostico = state.aiDiagnostico || generarDiagnosticoAvanzado(state.projectData, selectedRefNames);
+
+                    const algoritmosHtml = diagnostico.algoritmos.map(alg => `
+                        <div class="bg-cyber-950/90 border border-cyber-cyan/30 p-5 rounded-2xl flex flex-col justify-between hover:border-cyber-cyan/70 hover:shadow-[0_0_20px_rgba(0,240,255,0.2)] transition-all">
+                            <div>
+                                <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-cyber-neonGreen bg-cyber-neonGreen/10 border border-cyber-neonGreen/30 px-2.5 py-1 rounded-full shadow-[0_0_8px_rgba(0,255,136,0.2)]">
+                                    ${alg.afinidad}
+                                </span>
+                                <h3 class="font-orbitron font-bold text-base text-white mt-3 mb-2 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-cyber-cyan"></span>
+                                    ${alg.plataforma}
+                                </h3>
+                                <p class="text-xs font-mono text-zinc-300 mb-3 leading-relaxed">
+                                    <strong class="text-cyber-cyan">SEÑAL CLAVE:</strong> ${alg.senalesClave}
+                                </p>
+                            </div>
+                            <div class="pt-3 border-t border-cyber-cyan/20 text-xs text-zinc-300 leading-relaxed font-sans">
+                                <strong class="text-cyber-pink font-mono uppercase tracking-wider">PROTOCOLO:</strong> ${alg.accion}
+                            </div>
+                        </div>
+                    `).join('');
+
+                    const interesesHtml = diagnostico.publicoMeta.interesesCruzados.map(item => `
+                        <li class="flex items-center gap-2 text-zinc-300 font-mono text-xs">
+                            <span class="w-1.5 h-1.5 rounded-full bg-cyber-cyan"></span>
+                            <span>${item}</span>
+                        </li>
+                    `).join('');
+
+                    const riesgosHtml = diagnostico.riesgos.length > 0 ? diagnostico.riesgos.map(riesgo => `
+                        <li class="flex items-start gap-2.5 text-zinc-300 text-xs leading-relaxed">
+                            ${ICONS.alertTriangle}
+                            <span>${riesgo}</span>
+                        </li>
+                    `).join('') : `
+                        <li class="text-cyber-neonGreen font-mono text-xs flex items-center gap-2">
+                            ${ICONS.checkGreen}
+                            ¡Parámetros óptimos! Plataformas y clúster de audiencia calibrados.
+                        </li>
+                    `;
+
+                    mainContentHtml = `
+                        <div class="space-y-8 pb-12">
+                            <!-- Header de Tab -->
+                            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-cyber-cyan/20 pb-6">
+                                <div>
+                                    <div class="font-mono text-[10px] text-cyber-cyan tracking-widest uppercase mb-1 flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-cyber-neonGreen animate-ping"></span>
+                                        // ANÁLISIS DE TELEMETRÍA NEURAL // MATRIX ENGINE
+                                    </div>
+                                    <h1 class="text-3xl font-orbitron font-black text-white tracking-wide">
+                                        Diagnóstico Estratégico Integral
+                                    </h1>
+                                    <p class="text-zinc-400 text-xs font-mono mt-1">
+                                        Vector: <strong class="text-cyber-cyan">${state.auth.proyecto}</strong> [${state.projectData.generoPrincipal}] vs ${selectedRefNames.length} anclas de datos.
+                                    </p>
+                                </div>
+                                <span class="font-mono text-xs text-cyber-neonGreen bg-cyber-neonGreen/10 border border-cyber-neonGreen/40 px-3 py-1.5 rounded-full shadow-[0_0_10px_rgba(0,255,136,0.2)]">
+                                    [STATUS: CALIBRADO]
+                                </span>
+                            </div>
+
+                            <!-- 1. KPIs SUPERIORES HUD -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                                <div class="cyber-glass border border-cyber-cyan/40 p-6 rounded-2xl shadow-[0_0_25px_rgba(0,240,255,0.15)] relative overflow-hidden">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-cyber-cyan">Índice Anti-Flop // Algoritmo</span>
+                                        ${ICONS.activity}
+                                    </div>
+                                    <div class="flex items-baseline gap-2">
+                                        <span class="text-4xl font-orbitron font-black text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan to-cyber-pink drop-shadow-[0_0_10px_rgba(0,240,255,0.5)]">
+                                            ${diagnostico.score}
+                                        </span>
+                                        <span class="text-sm font-mono text-zinc-500">/ 100</span>
+                                    </div>
+                                    <div class="w-full bg-cyber-950 border border-zinc-800 h-2 rounded-full mt-3 overflow-hidden">
+                                        <div class="bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink h-full shadow-[0_0_10px_rgba(0,240,255,0.8)]" style="width: ${diagnostico.score}%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="cyber-glass border border-cyber-purple/40 p-6 rounded-2xl shadow-[0_0_25px_rgba(157,78,221,0.15)] relative overflow-hidden">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-cyber-purple">Fase Operativa // Presupuesto</span>
+                                        ${ICONS.trendingUp}
+                                    </div>
+                                    <p class="text-sm font-orbitron font-bold text-white truncate">${state.projectData.etapa}</p>
+                                    <div class="mt-2.5">
+                                        <span class="inline-block font-mono text-[11px] px-2.5 py-1 rounded-md bg-cyber-purple/15 text-cyber-purple border border-cyber-purple/40">
+                                            ${state.projectData.presupuesto}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="cyber-glass border border-cyber-neonGreen/40 p-6 rounded-2xl shadow-[0_0_25px_rgba(0,255,136,0.15)] relative overflow-hidden">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-cyber-neonGreen">Telemetría // Activos</span>
+                                        ${ICONS.target}
+                                    </div>
+                                    <div class="flex flex-wrap gap-2 mt-2">
+                                        <span class="text-xs font-mono px-2.5 py-1 rounded-md font-semibold ${state.projectData.spotify ? 'bg-cyber-neonGreen/15 text-cyber-neonGreen border border-cyber-neonGreen/40 shadow-[0_0_8px_rgba(0,255,136,0.2)]' : 'bg-zinc-900 text-zinc-500 border border-zinc-800'}">
+                                            ${state.projectData.spotify ? '✓ Spotify/YT API' : '✗ Sin Spotify/YT'}
+                                        </span>
+                                        <span class="text-xs font-mono px-2.5 py-1 rounded-md font-semibold ${state.projectData.igScreenshot ? 'bg-cyber-pink/15 text-cyber-pink border border-cyber-pink/40 shadow-[0_0_8px_rgba(255,0,127,0.2)]' : 'bg-zinc-900 text-zinc-500 border border-zinc-800'}">
+                                            ${state.projectData.igScreenshot ? '✓ Vision Feed IG' : '✗ Sin Captura IG'}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- AUDITORÍA VISUAL DE INSTAGRAM (GEMINI VISION) -->
+                            ${diagnostico.auditoriaInstagram ? `
+                                <div class="cyber-glass border border-cyber-pink/50 rounded-2xl p-6 shadow-[0_0_30px_rgba(255,0,127,0.2)] relative overflow-hidden">
+                                    <div class="absolute top-3 right-4 text-[10px] font-mono text-cyber-pink/60">[GEMINI.VISION] ──┐</div>
+                                    <h2 class="text-lg font-orbitron font-bold mb-3 flex items-center gap-2 text-cyber-pink">
+                                        ${ICONS.instagramTab} Auditoría Fotónica del Feed // Gemini Vision
+                                    </h2>
+                                    <div class="bg-cyber-950/80 border border-cyber-pink/25 rounded-xl p-4 text-xs font-sans text-zinc-200 leading-relaxed whitespace-pre-line">
+                                        ${diagnostico.auditoriaInstagram}
+                                    </div>
+                                </div>
+                            ` : ''}
+
+                            <!-- 2. RADIOGRAFÍA DEL PÚBLICO META -->
+                            <div class="cyber-glass border border-cyber-cyan/30 rounded-2xl p-6 shadow-[0_0_30px_rgba(0,0,0,0.6)]">
+                                <h2 class="text-xl font-orbitron font-bold mb-4 flex items-center gap-2 text-white">
+                                    ${ICONS.users} Radiografía del Público Meta
+                                </h2>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-4">
+                                        <div class="bg-cyber-950/90 border border-cyber-cyan/20 p-4 rounded-xl">
+                                            <p class="text-[10px] uppercase font-mono font-bold text-cyber-cyan mb-1 flex items-center gap-1.5">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-cyber-cyan"></span>
+                                                DEMOGRAFÍA PRINCIPAL
+                                            </p>
+                                            <p class="text-sm font-orbitron text-zinc-100 font-bold">${diagnostico.publicoMeta.edad}</p>
+                                        </div>
+                                        <div class="bg-cyber-950/90 border border-cyber-cyan/20 p-4 rounded-xl">
+                                            <p class="text-[10px] uppercase font-mono font-bold text-cyber-cyan mb-1 flex items-center gap-1.5">
+                                                ${ICONS.mapPin} PLAZAS / CIUDADES CLAVE
+                                            </p>
+                                            <p class="text-sm font-sans text-zinc-200 font-semibold">${diagnostico.publicoMeta.ciudades}</p>
+                                        </div>
+                                        <div class="bg-cyber-950/90 border border-cyber-cyan/20 p-4 rounded-xl">
+                                            <p class="text-[10px] uppercase font-mono font-bold text-cyber-cyan mb-1 flex items-center gap-1.5">
+                                                ${ICONS.clock} HORARIOS PICO DE TRANSMISIÓN
+                                            </p>
+                                            <p class="text-sm font-sans text-zinc-200">${diagnostico.publicoMeta.horariosPico}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-4">
+                                        <div class="bg-cyber-950/90 border border-cyber-pink/20 p-4 rounded-xl">
+                                            <p class="text-[10px] uppercase font-mono font-bold text-cyber-pink mb-1 flex items-center gap-1.5">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-cyber-pink"></span>
+                                                PSICOGRAFÍA Y COMPORTAMIENTO
+                                            </p>
+                                            <p class="text-xs font-sans text-zinc-300 leading-relaxed">${diagnostico.publicoMeta.comportamiento}</p>
+                                        </div>
+                                        <div class="bg-cyber-950/90 border border-cyber-pink/20 p-4 rounded-xl">
+                                            <p class="text-[10px] uppercase font-mono font-bold text-cyber-pink mb-2 flex items-center gap-1.5">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-cyber-pink"></span>
+                                                INTERESES CRUZADOS (SEGMENTACIÓN Y CONTENIDO)
+                                            </p>
+                                            <ul class="space-y-2">
+                                                ${interesesHtml}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 3. AFINIDAD Y ESTRATEGIA ALGORÍTMICA -->
+                            <div class="cyber-glass border border-cyber-cyan/30 rounded-2xl p-6 shadow-[0_0_30px_rgba(0,0,0,0.6)]">
+                                <h2 class="text-xl font-orbitron font-bold mb-2 flex items-center gap-2 text-white">
+                                    ${ICONS.cpu} Estrategia de Algoritmos por Plataforma
+                                </h2>
+                                <p class="text-xs font-mono text-zinc-400 mb-5">
+                                    Protocolo de activación de señales en los motores de recomendación para <strong class="text-cyber-cyan">${state.projectData.generoPrincipal}</strong>.
+                                </p>
+
+                                <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                                    ${algoritmosHtml}
+                                </div>
+                            </div>
+
+                            <!-- 4. FORTALEZAS VS RIESGOS DE FLOP -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="cyber-glass border border-cyber-neonGreen/40 p-6 rounded-2xl shadow-[0_0_20px_rgba(0,255,136,0.1)]">
+                                    <h3 class="text-cyber-neonGreen font-orbitron font-bold mb-4 flex items-center gap-2 text-base">
+                                        ${ICONS.checkGreen} Ventajas Competitivas Detectadas
+                                    </h3>
+                                    <ul class="space-y-3 text-xs font-sans text-zinc-200 leading-relaxed">
+                                        <li class="flex items-start gap-2.5">
+                                            <span class="text-cyber-neonGreen font-bold font-mono">▶</span>
+                                            <span>Clúster estilístico en <strong>${state.projectData.generoPrincipal}</strong> anclado a <strong>${selectedRefNames.join(', ') || 'tus referentes'}</strong>.</span>
+                                        </li>
+                                        ${state.projectData.igScreenshot ? `
+                                            <li class="flex items-start gap-2.5">
+                                                <span class="text-cyber-neonGreen font-bold font-mono">▶</span>
+                                                <span>Telemetría de Instagram procesada: listo para reestructurar bio, destacados y paleta visual del feed.</span>
+                                            </li>
+                                        ` : ''}
+                                        <li class="flex items-start gap-2.5">
+                                            <span class="text-cyber-neonGreen font-bold font-mono">▶</span>
+                                            <span>Alta afinidad para formatos cortos de guerrilla con ganchos de retención superiores a 3 segundos.</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="cyber-glass border border-red-500/50 p-6 rounded-2xl shadow-[0_0_20px_rgba(239,68,68,0.15)]">
+                                    <h3 class="text-red-400 font-orbitron font-bold mb-4 flex items-center gap-2 text-base">
+                                        ${ICONS.shieldAlert} Riesgos de Flop y Brechas Críticas
+                                    </h3>
+                                    <ul class="space-y-3">
+                                        ${riesgosHtml}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // TAB 2: PLAN DE CONTENIDO
+                else if (state.activeTab === 'contenido') {
+                    const firstRef = selectedRefNames[0] || 'tus referentes';
+                    const itemsHtml = MOCK_PLAN_CONTENIDO.map((item, idx) => {
+                        const dayColors = [
+                            { border: 'border-cyber-cyan/40', text: 'text-cyber-cyan', bg: 'bg-cyber-cyan/10' },
+                            { border: 'border-cyber-pink/40', text: 'text-cyber-pink', bg: 'bg-cyber-pink/10' },
+                            { border: 'border-cyber-purple/40', text: 'text-cyber-purple', bg: 'bg-cyber-purple/10' },
+                            { border: 'border-cyber-amber/40', text: 'text-cyber-amber', bg: 'bg-cyber-amber/10' }
+                        ];
+                        const c = dayColors[idx % dayColors.length];
+
+                        return `
+                            <div class="cyber-glass border ${c.border} rounded-2xl p-6 flex flex-col justify-between hover:shadow-[0_0_25px_rgba(0,240,255,0.2)] transition-all">
+                                <div>
+                                    <div class="flex items-center justify-between gap-2 mb-3">
+                                        <span class="text-[10px] font-mono font-bold uppercase tracking-wider ${c.text} ${c.bg} px-3 py-1 rounded-full border ${c.border}">
+                                            ${item.dia} • ${item.formato}
+                                        </span>
+                                        <span class="text-xs font-mono text-zinc-400">${item.pilar}</span>
+                                    </div>
+
+                                    <h3 class="text-base font-orbitron font-bold text-white mb-3 flex items-center gap-2">
+                                        ${ICONS.playCircle}
+                                        ${item.titulo}
+                                    </h3>
+
+                                    <div class="bg-cyber-950/90 border border-cyber-amber/40 rounded-xl p-4 mb-4 shadow-[0_0_15px_rgba(255,183,3,0.1)]">
+                                        <p class="text-[10px] uppercase font-mono font-bold text-cyber-amber mb-1 flex items-center justify-between">
+                                            <span class="flex items-center gap-1">${ICONS.sparkles} GANCHO HIPNÓTICO</span>
+                                            <span class="text-[9px] text-zinc-500">[00:00 - 00:03s]</span>
+                                        </p>
+                                        <p class="text-xs font-sans text-zinc-100 italic leading-relaxed">
+                                            "${item.gancho.replace('[Referente]', firstRef)}"
+                                        </p>
+                                    </div>
+
+                                    <p class="text-xs font-sans text-zinc-300 leading-relaxed mb-4">
+                                        <strong class="text-cyber-cyan font-mono uppercase tracking-wider">EJECUCIÓN:</strong> ${item.ejecucion}
+                                    </p>
+                                </div>
+
+                                <div class="pt-3 border-t border-cyber-cyan/20 text-xs font-mono text-zinc-400 flex items-center justify-between">
+                                    <span class="text-zinc-500 uppercase">OBJETIVO:</span>
+                                    <span class="text-cyber-neonGreen font-semibold">${item.objetivo}</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    mainContentHtml = `
+                        <div class="space-y-8 pb-12">
+                            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-cyber-cyan/20 pb-6">
+                                <div>
+                                    <div class="font-mono text-[10px] text-cyber-cyan tracking-widest uppercase mb-1 flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-cyber-cyan animate-ping"></span>
+                                        // CRONOGRAMA DE ALTO IMPACTO ORGÁNICO
+                                    </div>
+                                    <h1 class="text-3xl font-orbitron font-black text-white tracking-wide">
+                                        Plan de Contenido Semanal
+                                    </h1>
+                                    <p class="text-zinc-400 text-xs font-mono mt-1">
+                                        Calibrado para <strong class="text-cyber-cyan">${state.auth.proyecto}</strong> aplicando patrones virales de ${firstRef}.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                ${itemsHtml}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // TAB 3: ROADMAP DE LANZAMIENTO
+                else if (state.activeTab === 'roadmap') {
+                    const totalTasks = MOCK_ROADMAP.reduce((acc, fase) => acc + fase.tareas.length, 0);
+                    const progressPercent = Math.round((state.completedTasks.length / totalTasks) * 100);
+
+                    const roadmapBlocksHtml = MOCK_ROADMAP.map((bloque) => {
+                        const tareasHtml = bloque.tareas.map(tarea => {
+                            const isDone = state.completedTasks.includes(tarea.id);
+                            return `
+                                <button
+                                    type="button"
+                                    onclick="toggleTask('${tarea.id}')"
+                                    class="w-full text-left flex items-start gap-3 p-3.5 rounded-xl border transition-all cursor-pointer ${isDone
+                                    ? 'bg-cyber-950/60 border-cyber-neonGreen/30 text-zinc-500 line-through'
+                                    : 'bg-cyber-950/90 border-cyber-cyan/25 text-zinc-200 hover:border-cyber-cyan hover:text-white hover:bg-cyber-cyan/5'
+                                }"
+                                >
+                                    ${isDone ? ICONS.checkSquare : ICONS.square}
+                                    <span class="text-xs font-sans leading-relaxed flex-1">${tarea.texto}</span>
+                                </button>
+                            `;
+                        }).join('');
+
+                        return `
+                            <div class="cyber-glass border border-cyber-cyan/30 rounded-2xl p-6 shadow-[0_0_25px_rgba(0,0,0,0.5)]">
+                                <div class="flex items-center justify-between mb-4 pb-3 border-b border-cyber-cyan/20">
+                                    <h3 class="text-base font-orbitron font-bold ${bloque.color} flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-cyber-cyan"></span>
+                                        ${bloque.fase}
+                                    </h3>
+                                    <span class="text-xs font-mono text-cyber-cyan flex items-center gap-1.5 bg-cyber-950 px-3 py-1 rounded-full border border-cyber-cyan/30">
+                                        ${ICONS.clock} ${bloque.tiempo}
+                                    </span>
+                                </div>
+                                <div class="space-y-3">
+                                    ${tareasHtml}
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    mainContentHtml = `
+                        <div class="space-y-8 pb-12">
+                            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-cyber-cyan/20 pb-6">
+                                <div>
+                                    <div class="font-mono text-[10px] text-cyber-cyan tracking-widest uppercase mb-1 flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-cyber-cyan animate-ping"></span>
+                                        // PROTOCOLO DE DESPLIEGUE SECUENCIAL
+                                    </div>
+                                    <h1 class="text-3xl font-orbitron font-black text-white tracking-wide">
+                                        Roadmap de Lanzamiento
+                                    </h1>
+                                    <p class="text-zinc-400 text-xs font-mono mt-1">
+                                        Ajustado para modalidad: <span class="text-cyber-cyan font-bold">${state.projectData.presupuesto}</span>.
+                                    </p>
+                                </div>
+
+                                <!-- Barra de Progreso HUD -->
+                                <div class="cyber-glass border border-cyber-cyan/40 p-5 rounded-2xl min-w-[260px] shadow-[0_0_20px_rgba(0,240,255,0.15)]">
+                                    <div class="flex justify-between items-center text-xs font-mono font-bold mb-2">
+                                        <span class="text-zinc-400">DESPLIEGUE:</span>
+                                        <span class="text-cyber-cyan font-orbitron text-sm">${progressPercent}%</span>
+                                    </div>
+                                    <div class="w-full bg-cyber-950 border border-zinc-800 h-2.5 rounded-full overflow-hidden">
+                                        <div
+                                            class="bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink h-full transition-all duration-300 shadow-[0_0_10px_rgba(0,240,255,0.7)]"
+                                            style="width: ${progressPercent}%"
+                                        ></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-6">
+                                ${roadmapBlocksHtml}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // TAB 4: DIRECTORIO DE MEDIOS
+                else if (state.activeTab === 'medios') {
+                    const mediosHtml = MOCK_MEDIOS_MEXICO.map(medio => `
+                        <div class="cyber-glass border border-cyber-cyan/30 p-6 rounded-2xl flex flex-col md:flex-row gap-5 justify-between md:items-center hover:border-cyber-cyan/70 hover:shadow-[0_0_25px_rgba(0,240,255,0.2)] transition-all">
+                            <div class="space-y-1.5">
+                                <div class="flex items-center gap-3">
+                                    <h3 class="font-orbitron font-bold text-lg text-white">${medio.nombre}</h3>
+                                    <span class="text-[10px] font-mono bg-cyber-purple/20 text-cyber-purple border border-cyber-purple/40 px-2.5 py-1 rounded-full uppercase font-bold">
+                                        ${medio.tipo}
+                                    </span>
+                                </div>
+                                <p class="text-xs font-sans text-zinc-300">${medio.enfoque}</p>
+                            </div>
+                            <div class="bg-cyber-950/90 p-4 rounded-xl border border-cyber-cyan/20 md:w-2/5">
+                                <p class="text-[10px] font-mono text-cyber-cyan uppercase font-bold mb-1 flex items-center gap-1.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-cyber-cyan"></span>
+                                    PROTOCOLO DE PITCH
+                                </p>
+                                <p class="text-xs font-mono text-zinc-200">${medio.contacto}</p>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    mainContentHtml = `
+                        <div class="space-y-8 pb-12">
+                            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-cyber-cyan/20 pb-6">
+                                <div>
+                                    <div class="font-mono text-[10px] text-cyber-cyan tracking-widest uppercase mb-1 flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-cyber-cyan animate-ping"></span>
+                                        // RED DE DIFUSIÓN & PRENSA
+                                    </div>
+                                    <h1 class="text-3xl font-orbitron font-black text-white tracking-wide">
+                                        Directorio de Medios (México)
+                                    </h1>
+                                    <p class="text-zinc-400 text-xs font-mono mt-1">
+                                        Curado para fase: <span class="text-cyber-cyan font-bold">${state.projectData.etapa}</span>.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                ${mediosHtml}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                app.innerHTML = `
+                    <div class="min-h-screen cyber-bg text-zinc-100 flex flex-col md:flex-row relative overflow-hidden font-sans">
+                        <!-- Neon ambient lights -->
+                        <div class="absolute top-0 right-1/4 w-96 h-96 bg-cyber-cyan/10 rounded-full blur-3xl pointer-events-none"></div>
+                        <div class="absolute bottom-10 left-10 w-96 h-96 bg-cyber-purple/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                        <!-- Sidebar Cyberpunk -->
+                        <div class="w-full md:w-72 cyber-glass border-r border-cyber-cyan/30 p-6 flex flex-col justify-between shrink-0 relative z-20 backdrop-blur-2xl">
+                            <div>
+                                <div class="mb-8 pb-6 border-b border-cyber-cyan/20">
+                                    <div class="text-[10px] font-orbitron font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan to-cyber-pink uppercase mb-1">
+                                        ANTI-FLOP // HUD
+                                    </div>
+                                    <h2 class="font-orbitron font-black text-2xl truncate text-white drop-shadow-[0_0_10px_rgba(0,240,255,0.4)]">
+                                        ${state.auth.proyecto}
+                                    </h2>
+                                    <div class="inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded-full bg-cyber-neonGreen/10 border border-cyber-neonGreen/40 font-mono text-[11px] text-cyber-neonGreen">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-cyber-neonGreen animate-pulse"></span>
+                                        ${state.projectData.generoPrincipal}
+                                    </div>
+                                </div>
+
+                                <nav class="space-y-2">
+                                    <button onclick="setActiveTab('diagnostico')" class="w-full flex items-center gap-3 p-3.5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer ${state.activeTab === 'diagnostico' ? 'border-l-4 border-l-cyber-cyan border-y border-r border-cyber-cyan/40 bg-cyber-cyan/15 text-cyber-cyan shadow-[0_0_20px_rgba(0,240,255,0.2)]' : 'text-zinc-400 hover:text-white hover:bg-cyber-cyan/5 hover:border hover:border-cyber-cyan/20 border border-transparent'}">
+                                        ${ICONS.dashboard} Diagnóstico
+                                    </button>
+                                    <button onclick="setActiveTab('contenido')" class="w-full flex items-center gap-3 p-3.5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer ${state.activeTab === 'contenido' ? 'border-l-4 border-l-cyber-pink border-y border-r border-cyber-pink/40 bg-cyber-pink/15 text-cyber-pink shadow-[0_0_20px_rgba(255,0,127,0.2)]' : 'text-zinc-400 hover:text-white hover:bg-cyber-pink/5 hover:border hover:border-cyber-pink/20 border border-transparent'}">
+                                        ${ICONS.instagramTab} Plan Contenido
+                                    </button>
+                                    <button onclick="setActiveTab('roadmap')" class="w-full flex items-center gap-3 p-3.5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer ${state.activeTab === 'roadmap' ? 'border-l-4 border-l-cyber-purple border-y border-r border-cyber-purple/40 bg-cyber-purple/15 text-cyber-purple shadow-[0_0_20px_rgba(157,78,221,0.2)]' : 'text-zinc-400 hover:text-white hover:bg-cyber-purple/5 hover:border hover:border-cyber-purple/20 border border-transparent'}">
+                                        ${ICONS.calendar} Roadmap
+                                    </button>
+                                    <button onclick="setActiveTab('medios')" class="w-full flex items-center gap-3 p-3.5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer ${state.activeTab === 'medios' ? 'border-l-4 border-l-cyber-amber border-y border-r border-cyber-amber/40 bg-cyber-amber/15 text-cyber-amber shadow-[0_0_20px_rgba(255,183,3,0.2)]' : 'text-zinc-400 hover:text-white hover:bg-cyber-amber/5 hover:border hover:border-cyber-amber/20 border border-transparent'}">
+                                        ${ICONS.megaphone} Directorio Medios
+                                    </button>
+                                </nav>
+                            </div>
+
+                            <div class="pt-6 border-t border-cyber-cyan/20 mt-6 space-y-3">
+                                <div class="font-mono text-[10px] text-zinc-400 flex items-center justify-between">
+                                    <span>LINK INTEGRITY:</span>
+                                    <span class="text-cyber-neonGreen font-bold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-cyber-neonGreen animate-pulse"></span>
+                                        100% ONLINE
+                                    </span>
+                                </div>
+                                <button onclick="setStep(0); state.selectedRefIds = []; state.completedTasks = []; render();" class="w-full font-mono text-xs text-zinc-400 hover:text-red-400 py-2.5 px-3 rounded-lg border border-transparent hover:border-red-500/30 hover:bg-red-500/10 text-left transition-all flex items-center justify-between group cursor-pointer">
+                                    <span>[ REBOOT TERMINAL ]</span>
+                                    ${ICONS.lockSmall}
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Contenido Principal -->
+                        <div class="flex-1 p-6 md:p-10 overflow-y-auto h-screen relative z-10 custom-scroll">
+                            ${mainContentHtml}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Iniciar la app
+        window.addEventListener('DOMContentLoaded', () => {
+            render();
+            // Pre-autenticar con Spotify para mostrar el indicador verde
+            getSpotifyToken().then(() => render());
+        });
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            render();
+            getSpotifyToken().then(() => render());
+        }
+    </script>
+</body>
+
+</html>

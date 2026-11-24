@@ -1,0 +1,615 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import { connect, mockConfig, mockHttp, resultText } from './helpers.js';
+
+const track = {
+  id: 'track1',
+  name: 'Test Track',
+  type: 'track',
+  duration_ms: 180000,
+  artists: [{ name: 'Test Artist' }],
+  album: { name: 'Test Album' },
+};
+const album = {
+  id: 'album1',
+  name: 'Test Album',
+  artists: [{ name: 'Test Artist' }],
+  release_date: '2026-01-01',
+  total_tracks: 1,
+  album_type: 'album',
+};
+const device = {
+  id: 'device1',
+  name: 'Test Speaker',
+  type: 'Speaker',
+  is_active: true,
+  volume_percent: 50,
+};
+const devices = { url: 'me/player/devices', response: { devices: [device] } };
+const cases = [
+  {
+    name: 'searchSpotify',
+    args: { query: 'test', type: 'track', limit: 2, offset: 3 },
+    http: [
+      {
+        url: 'search?q=test&type=track&limit=2&offset=3',
+        response: { tracks: { items: [track] } },
+      },
+    ],
+    text: /Test Track.*Test Artist.*3:00/,
+  },
+  {
+    name: 'getNowPlaying',
+    http: [{ url: 'me/player', status: 204 }],
+    text: /Nothing is currently playing/,
+  },
+  {
+    name: 'getMyPlaylists',
+    args: { limit: 2, offset: 5 },
+    http: [
+      {
+        url: 'me/playlists?limit=2&offset=5',
+        response: {
+          total: 8,
+          items: [
+            { id: 'playlist1', name: 'Test Playlist', items: { total: 12 } },
+          ],
+        },
+      },
+    ],
+    text: /6\. "Test Playlist" \(12 tracks\)/,
+  },
+  {
+    name: 'getPlaylistTracks',
+    args: { playlistId: 'playlist1', limit: 2, offset: 1 },
+    http: [
+      {
+        url: 'playlists/playlist1/items?limit=2&offset=1&additional_types=track%2Cepisode',
+        response: { total: 3, items: [{ item: track }, { track: null }] },
+      },
+    ],
+    text: /2\. "Test Track"[\s\S]*3\. \[Removed track\]/,
+  },
+  {
+    name: 'getRecentlyPlayed',
+    http: [
+      { url: 'me/player/recently-played?limit=50', response: { items: [] } },
+    ],
+    text: /recently played/,
+  },
+  {
+    name: 'getUsersSavedTracks',
+    http: [{ url: 'me/tracks?limit=50&offset=0', response: { items: [] } }],
+    text: /saved tracks/,
+  },
+  {
+    name: 'getQueue',
+    http: [
+      {
+        url: 'me/player/queue',
+        response: { currently_playing: null, queue: [] },
+      },
+    ],
+    text: /queue/i,
+  },
+  { name: 'getAvailableDevices', http: [devices], text: /Test Speaker/ },
+  {
+    name: 'removeUsersSavedTracks',
+    args: { trackIds: ['track1'] },
+    http: [
+      { url: 'me/library?uris=spotify%3Atrack%3Atrack1', method: 'DELETE' },
+    ],
+    text: /Successfully removed 1 track/,
+  },
+  {
+    name: 'getTopTracks',
+    http: [
+      {
+        url: 'me/top/tracks?time_range=medium_term&limit=20',
+        response: { items: [] },
+      },
+    ],
+    text: /No top tracks/,
+  },
+  {
+    name: 'getTopArtists',
+    http: [
+      {
+        url: 'me/top/artists?time_range=medium_term&limit=20',
+        response: { items: [] },
+      },
+    ],
+    text: /No top artists/,
+  },
+  {
+    name: 'getFollowedArtists',
+    http: [
+      {
+        url: 'me/following?type=artist&limit=20',
+        response: { artists: { items: [], next: null, total: 0 } },
+      },
+    ],
+    text: /No followed artists/,
+  },
+  {
+    name: 'playMusic',
+    args: { type: 'track', id: 'track1' },
+    http: [
+      devices,
+      {
+        url: 'me/player/play?device_id=device1',
+        method: 'PUT',
+        body: { uris: ['spotify:track:track1'] },
+      },
+    ],
+    text: /Now playing/,
+  },
+  {
+    name: 'pausePlayback',
+    http: [{ url: 'me/player/pause', method: 'PUT' }],
+    text: /paused/,
+  },
+  {
+    name: 'skipToNext',
+    http: [{ url: 'me/player/next', method: 'POST' }],
+    text: /next/,
+  },
+  {
+    name: 'skipToPrevious',
+    http: [{ url: 'me/player/previous', method: 'POST' }],
+    text: /previous/,
+  },
+  {
+    name: 'createPlaylist',
+    args: { name: 'New Playlist' },
+    http: [
+      {
+        url: 'me/playlists',
+        method: 'POST',
+        body: { name: 'New Playlist', public: false },
+        response: {
+          id: 'playlist1',
+          external_urls: {
+            spotify: 'https://open.spotify.com/playlist/playlist1',
+          },
+        },
+      },
+    ],
+    text: /Successfully created playlist/,
+  },
+  {
+    name: 'addTracksToPlaylist',
+    args: {
+      playlistId: 'playlist1',
+      trackIds: ['track1', 'spotify:episode:episode1'],
+      position: 0,
+    },
+    http: [
+      {
+        url: 'playlists/playlist1/items',
+        method: 'POST',
+        body: {
+          uris: ['spotify:track:track1', 'spotify:episode:episode1'],
+          position: 0,
+        },
+        response: { snapshot_id: 'snapshot1' },
+      },
+    ],
+    text: /Successfully added 2 items/,
+  },
+  {
+    name: 'resumePlayback',
+    http: [devices, { url: 'me/player/play?device_id=device1', method: 'PUT' }],
+    text: /resumed/,
+  },
+  {
+    name: 'addToQueue',
+    args: { uri: 'spotify:track:track1', deviceId: 'device1' },
+    http: [
+      {
+        url: 'me/player/queue?uri=spotify%3Atrack%3Atrack1&device_id=device1',
+        method: 'POST',
+      },
+    ],
+    text: /queue/,
+  },
+  {
+    name: 'setVolume',
+    args: { volumePercent: 25, deviceId: 'device1' },
+    http: [
+      {
+        url: 'me/player/volume?volume_percent=25&device_id=device1',
+        method: 'PUT',
+      },
+    ],
+    text: /25%/,
+  },
+  {
+    name: 'adjustVolume',
+    args: { adjustment: 80, deviceId: 'device1' },
+    http: [
+      { url: 'me/player', response: { device } },
+      {
+        url: 'me/player/volume?volume_percent=100&device_id=device1',
+        method: 'PUT',
+      },
+    ],
+    text: /from 50% to 100%/,
+  },
+  {
+    name: 'getAlbums',
+    args: { ids: 'album1' },
+    http: [{ url: 'albums/album1', response: album }],
+    text: /Test Album/,
+  },
+  {
+    name: 'getAlbumTracks',
+    args: { albumId: 'album1', limit: 2, offset: 0 },
+    http: [
+      { url: 'albums/album1/tracks?limit=2&offset=0', response: { items: [] } },
+    ],
+    text: /No tracks/,
+  },
+  {
+    name: 'saveOrRemoveAlbumForUser',
+    args: { albumIds: ['album1'], action: 'save' },
+    http: [{ url: 'me/albums', method: 'PUT', body: ['album1'] }],
+    text: /saved/,
+  },
+  {
+    name: 'checkUsersSavedAlbums',
+    args: { albumIds: ['album1'] },
+    http: [{ url: 'me/albums/contains?ids=album1', response: [true] }],
+    text: /album1: Saved/,
+  },
+  {
+    name: 'getPlaylist',
+    args: { playlistId: 'playlist1' },
+    http: [
+      {
+        url: 'playlists/playlist1',
+        response: {
+          id: 'playlist1',
+          name: 'Test Playlist',
+          owner: { display_name: 'Test User' },
+          tracks: { total: 3 },
+        },
+      },
+    ],
+    text: /Test Playlist[\s\S]*Test User[\s\S]*3/,
+  },
+  {
+    name: 'updatePlaylist',
+    args: { playlistId: 'playlist1', name: 'Renamed', public: false },
+    http: [
+      {
+        url: 'playlists/playlist1',
+        method: 'PUT',
+        body: { name: 'Renamed', public: false },
+      },
+    ],
+    text: /Successfully updated/,
+  },
+  {
+    name: 'removeTracksFromPlaylist',
+    args: {
+      playlistId: 'playlist1',
+      trackIds: ['track1'],
+      snapshotId: 'snapshot1',
+    },
+    http: [
+      {
+        url: 'playlists/playlist1/items',
+        method: 'DELETE',
+        body: {
+          items: [{ uri: 'spotify:track:track1' }],
+          snapshot_id: 'snapshot1',
+        },
+      },
+    ],
+    text: /Successfully removed/,
+  },
+  {
+    name: 'reorderPlaylistItems',
+    args: { playlistId: 'playlist1', rangeStart: 2, insertBefore: 0 },
+    http: [
+      {
+        url: 'playlists/playlist1/items',
+        method: 'PUT',
+        body: { range_start: 2, insert_before: 0 },
+      },
+    ],
+    text: /Successfully moved 1 track/,
+  },
+  {
+    name: 'unfollowPlaylist',
+    args: { playlistId: 'playlist1' },
+    http: [{ url: 'playlists/playlist1/followers', method: 'DELETE' }],
+    text: /Successfully unfollowed/,
+  },
+];
+
+for (const mode of ['legacy', { pin: '2026-07-28' }]) {
+  for (const scenario of cases) {
+    test(`${scenario.name} sends the expected Spotify request (${JSON.stringify(mode)})`, async (t) => {
+      mockConfig(t);
+      mockHttp(t, scenario.http);
+      const client = await connect(t, mode);
+      const result = await client.callTool({
+        name: scenario.name,
+        arguments: scenario.args ?? {},
+      });
+      assert.match(resultText(result), scenario.text);
+    });
+  }
+}
+
+test('top items omit genres and popularity when Development Mode strips them', async (t) => {
+  mockConfig(t);
+  mockHttp(t, [
+    {
+      url: 'me/top/artists?time_range=medium_term&limit=20',
+      response: { items: [{ id: 'artist1', name: 'Test Artist' }] },
+    },
+    {
+      url: 'me/top/tracks?time_range=medium_term&limit=20',
+      response: { items: [track] },
+    },
+  ]);
+  const client = await connect(t);
+
+  const artists = await client.callTool({
+    name: 'getTopArtists',
+    arguments: {},
+  });
+  assert.equal(artists.isError, undefined);
+  assert.match(resultText(artists), /1\. Test Artist - ID: artist1/);
+
+  const tracks = await client.callTool({ name: 'getTopTracks', arguments: {} });
+  assert.doesNotMatch(resultText(tracks), /undefined/);
+  assert.match(resultText(tracks), /"Test Track" by Test Artist \(3:00\) - ID/);
+});
+
+test('getFollowedArtists pages by cursor', async (t) => {
+  mockConfig(t);
+  mockHttp(t, [
+    {
+      url: 'me/following?type=artist&limit=2',
+      response: {
+        artists: {
+          items: [
+            { id: 'artist1', name: 'First Artist', genres: ['dubstep'] },
+            { id: 'artist2', name: 'Second Artist', popularity: 40 },
+          ],
+          next: 'https://api.spotify.com/v1/me/following?type=artist&after=artist2&limit=2',
+          cursors: { after: 'artist2' },
+          total: 3,
+        },
+      },
+    },
+    {
+      url: 'me/following?type=artist&limit=2&after=artist2',
+      response: {
+        artists: {
+          items: [{ id: 'artist3', name: 'Third Artist' }],
+          next: null,
+          cursors: { after: null },
+          total: 3,
+        },
+      },
+    },
+  ]);
+  const client = await connect(t);
+
+  const first = resultText(
+    await client.callTool({
+      name: 'getFollowedArtists',
+      arguments: { limit: 2 },
+    }),
+  );
+  assert.match(first, /# Followed Artists \(2 of 3\)/);
+  assert.match(first, /1\. First Artist - Genres: dubstep - ID: artist1/);
+  assert.match(first, /2\. Second Artist - Popularity: 40 - ID: artist2/);
+  assert.match(first, /after: "artist2"/);
+
+  const last = resultText(
+    await client.callTool({
+      name: 'getFollowedArtists',
+      arguments: { limit: 2, after: 'artist2' },
+    }),
+  );
+  assert.match(last, /1\. Third Artist - ID: artist3/);
+  assert.doesNotMatch(last, /More available|undefined/);
+});
+
+const queuePost = (uri, deviceId) => ({
+  url: `me/player/queue?uri=${encodeURIComponent(uri)}${deviceId ? `&device_id=${deviceId}` : ''}`,
+  method: 'POST',
+});
+
+test('addToQueue queues a list of tracks and episodes in order', async (t) => {
+  mockConfig(t);
+  mockHttp(t, [
+    queuePost('spotify:track:track1'),
+    queuePost('spotify:episode:episode1'),
+    queuePost('spotify:track:track2'),
+  ]);
+  const client = await connect(t);
+  const result = await client.callTool({
+    name: 'addToQueue',
+    arguments: {
+      trackIds: ['track1', 'spotify:episode:episode1', 'spotify:track:track2'],
+    },
+  });
+  assert.equal(result.isError, undefined);
+  assert.match(resultText(result), /Added 3 items to queue/);
+});
+
+test('addToQueue treats the queue endpoint’s non-JSON 200 body as success', async (t) => {
+  mockConfig(t);
+  mockHttp(t, [
+    { ...queuePost('spotify:track:track1'), rawBody: 'o0mcsLwLby' },
+    { ...queuePost('spotify:track:track2'), rawBody: 'o0mcsLwLbz' },
+  ]);
+  const client = await connect(t);
+  const result = await client.callTool({
+    name: 'addToQueue',
+    arguments: { trackIds: ['track1', 'track2'] },
+  });
+  assert.match(resultText(result), /Added 2 items to queue/);
+});
+
+test('a non-JSON body on a GET is still an error', async (t) => {
+  mockConfig(t);
+  mockHttp(t, [
+    {
+      url: 'playlists/playlist1/items?limit=50&offset=0&additional_types=track%2Cepisode',
+      rawBody: '<html>oops</html>',
+    },
+  ]);
+  const client = await connect(t);
+  const result = await client.callTool({
+    name: 'addToQueue',
+    arguments: { type: 'playlist', id: 'playlist1' },
+  });
+  assert.equal(result.isError, true);
+  assert.match(result.content[0].text, /Error reading playlist/);
+});
+
+test('addToQueue expands a playlist into its tracks, skipping unqueueable ones', async (t) => {
+  mockConfig(t);
+  mockHttp(t, [
+    {
+      url: 'playlists/playlist1/items?limit=50&offset=0&additional_types=track%2Cepisode',
+      response: {
+        total: 4,
+        items: [
+          { item: { uri: 'spotify:track:track1' } },
+          { item: null },
+          { item: { uri: 'spotify:local:Artist:Album:Song:180' } },
+          { track: { uri: 'spotify:episode:episode1' } },
+        ],
+      },
+    },
+    queuePost('spotify:track:track1'),
+    queuePost('spotify:episode:episode1'),
+  ]);
+  const client = await connect(t);
+  const result = await client.callTool({
+    name: 'addToQueue',
+    arguments: { uri: 'spotify:playlist:playlist1' },
+  });
+  const text = resultText(result);
+  assert.match(text, /Added 2 items from playlist playlist1 to queue/);
+  assert.match(text, /Skipped 2 removed or local tracks/);
+  assert.doesNotMatch(text, /more; call again/);
+});
+
+test('addToQueue pages through an album from an offset and reports what is left', async (t) => {
+  mockConfig(t);
+  mockHttp(t, [
+    {
+      url: 'albums/album1/tracks?limit=2&offset=1',
+      response: {
+        total: 5,
+        items: [{ uri: 'spotify:track:t2' }, { uri: 'spotify:track:t3' }],
+      },
+    },
+    queuePost('spotify:track:t2', 'device1'),
+    queuePost('spotify:track:t3', 'device1'),
+  ]);
+  const client = await connect(t);
+  const result = await client.callTool({
+    name: 'addToQueue',
+    arguments: {
+      type: 'album',
+      id: 'album1',
+      offset: 1,
+      limit: 2,
+      deviceId: 'device1',
+    },
+  });
+  const text = resultText(result);
+  assert.match(text, /Added 2 items from album album1 to queue/);
+  assert.match(text, /has 2 more; call again with offset 3/);
+});
+
+test('addToQueue reports how far it got when Spotify fails mid-batch', async (t) => {
+  mockConfig(t);
+  mockHttp(t, [
+    queuePost('spotify:track:track1'),
+    {
+      ...queuePost('spotify:track:track2'),
+      status: 429,
+      response: { error: { message: 'Rate limited' } },
+    },
+  ]);
+  const client = await connect(t);
+  const result = await client.callTool({
+    name: 'addToQueue',
+    arguments: { trackIds: ['track1', 'track2', 'track3'] },
+  });
+  assert.equal(result.isError, true);
+  const text = result.content[0].text;
+  assert.match(text, /Queued 1 of 3 items/);
+  assert.match(text, /starting with: spotify:track:track2/);
+});
+
+test('addToQueue rejects artists and ambiguous input before any request', async (t) => {
+  mockConfig(t);
+  mockHttp(t, []);
+  const client = await connect(t);
+  for (const args of [
+    { uri: 'spotify:artist:artist1' },
+    {},
+    { trackIds: ['track1'], uri: 'spotify:track:track2' },
+    { type: 'album', id: 'album1/../me' },
+  ]) {
+    const result = await client
+      .callTool({ name: 'addToQueue', arguments: args })
+      .catch((error) => ({
+        isError: true,
+        content: [{ text: String(error) }],
+      }));
+    assert.equal(result.isError, true, JSON.stringify(args));
+  }
+});
+
+test('Spotify HTTP failures become MCP tool errors', async (t) => {
+  mockConfig(t);
+  mockHttp(t, [
+    {
+      url: 'me/playlists?limit=50&offset=0',
+      status: 403,
+      response: { error: { message: 'Forbidden' } },
+    },
+  ]);
+  const client = await connect(t, { pin: '2026-07-28' });
+  const result = await client.callTool({
+    name: 'getMyPlaylists',
+    arguments: {},
+  });
+  assert.equal(result.isError, true);
+  assert.match(result.content[0].text, /403|Forbidden/);
+});
+
+test('playlist IDs that could alter the API path are rejected before any request', async (t) => {
+  mockConfig(t);
+  mockHttp(t, []);
+  const client = await connect(t, { pin: '2026-07-28' });
+  for (const playlistId of [
+    '../me/player',
+    'abc/followers',
+    'abc?market=ES',
+    'abc#',
+    'a%2Fb',
+  ]) {
+    const result = await client
+      .callTool({ name: 'unfollowPlaylist', arguments: { playlistId } })
+      .catch((error) => ({
+        isError: true,
+        content: [{ text: String(error) }],
+      }));
+    assert.equal(result.isError, true, playlistId);
+  }
+});
